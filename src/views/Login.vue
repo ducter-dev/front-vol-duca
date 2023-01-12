@@ -6,23 +6,33 @@
         </div>
       </div>
       <div class="w-full flex justify-center items-center">
-        <form class="w-3/12">
-          <div class="mb-6">
-            <label for="usuario" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Usuario</label>
-            <input type="text" id="usuario" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Nombre de Usuario" required>
-          </div>
-          <div class="mb-6">
-            <label for="pass" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Contraseña</label>
-            <input type="password" id="pass" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Contraseña" required>
-          </div>
-          <div class="flex justify-center items-center">
-            <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Iniciar Sesión</button>
-          </div>
-        </form>
+        <FormLogin/>
       </div>
     </div>
 </template>
   
-  <script setup>
+<script>
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   import LogoTermigas from '../assets/logo.png'
-  </script>
+  import FormLogin from '../components/Forms/FormLogin.vue'
+  export default {
+    components: {LogoTermigas, FormLogin},
+    setup () {
+      return {
+        LogoTermigas,
+        FormLogin,
+      }
+    } 
+  }
+</script>
+
+<style>
+	#preloader{
+	background: rgb(255, 255, 255) url(../assets/loading-81.gif) no-repeat center center;
+	height: 100vh;
+	width: 100%;
+	position: fixed;
+	z-index: 100;
+	}
+</style>
