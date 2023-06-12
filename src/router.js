@@ -1,15 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from './views/Login.vue'
-import RecuperarPassword from './views/RecuperarPassword.vue'
+import Login from './modules/auth/views/Login.vue'
+
+import RecuperarPassword from './modules/auth/views/RecuperarPassword.vue'
 
 const routes = [
     { 
         path: '/', 
-        component: Login 
+        component: Login,
+        name: 'login'
     },
     {
       path: '/password/recuperar',
       component: RecuperarPassword,
+      name: 'recovery'
     },
 ]
 
