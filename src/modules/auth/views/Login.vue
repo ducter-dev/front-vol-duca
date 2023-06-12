@@ -1,11 +1,11 @@
 <template>
-    <div class="container mx-auto h-full flex flex-col justify-center items-center">
-      <div class="w-full flex justify-center items-center mb-10">
-        <div class="justify-center items-center">
+    <div class="container flex flex-col items-center justify-center h-full mx-auto">
+      <div class="flex items-center justify-center w-full mb-10">
+        <div class="items-center justify-center">
           <img class="w-96" :src="LogoTermigas" alt="Logo Termigas">
         </div>
       </div>
-      <div class="w-full flex justify-center items-center">
+      <div class="flex items-center justify-center w-full">
         <FormLogin/>
       </div>
     </div>
@@ -14,8 +14,8 @@
 <script>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import LogoTermigas from '../assets/logo.png'
-  import FormLogin from '../components/Forms/FormLogin.vue'
+  import LogoTermigas from '../../../assets/logo.png'
+  import FormLogin from '../../../components/Forms/FormLogin.vue'
   export default {
     components: {LogoTermigas, FormLogin},
     setup () {

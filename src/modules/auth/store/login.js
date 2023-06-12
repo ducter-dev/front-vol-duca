@@ -18,22 +18,20 @@ export const useLoginStore = defineStore('login', {
           usuario: usuario,
           password,
         }
-        const { data, status } = await api_volumetricos.post('/api/users/login', dataForm)
-        const { access_token } = data
+        const res = await api_volumetricos.post('/api/users/login', dataForm)
+        console.log("🚀 ~ file: login.js:22 ~ login ~ res:", res)
+        const { data, status } = res
+        const { access_token } = data.data.user
+        console.log("🚀 ~ file: login.js:23 ~ login ~ data.data.user:", data.data.user)
+        console.log("🚀 ~ file: login.js:23 ~ login ~ access_token:", access_token)
         delete user.password
-        this.user = data.user
+        this.user = data.data.user 
         this.token = access_token
         localStorage.setItem('token', access_token)
-        const obj = {
-          ok: true, detail: data.user, status 
-        }
-        return obj
+        return res
         
-      } catch (e) {
-        const obj = {
-          ok: false, detail: e.response.data, status:e.response.status 
-        }
-        return obj
+      } catch (error) {
+        return error
       }
     },
 
