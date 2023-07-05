@@ -1,19 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from './modules/auth/views/Login.vue'
-
-import RecuperarPassword from './modules/auth/views/RecuperarPassword.vue'
+import authRouter from './modules/auth/router'
+import dashboardRouter from './modules/dashboard/router'
+import { useLoginStore } from './modules/auth/store/login'
 
 const routes = [
-    { 
-        path: '/', 
-        component: Login,
-        name: 'login'
-    },
-    {
-      path: '/password/recuperar',
-      component: RecuperarPassword,
-      name: 'recovery'
-    },
+  {
+    path: '/',
+    name: 'Landing',
+    component: () => import('./views/Landing.vue')
+  },
+  {
+    path: '/auth',
+    ...authRouter
+  },
+  {
+    path: '/dashboard',
+    ...dashboardRouter
+  },
 ]
 
 const history = createWebHistory()
@@ -21,6 +24,25 @@ const history = createWebHistory()
 const router = createRouter({
   history,
   routes,
+})
+
+
+router.beforeEach((to, from, next) => {
+  const loginStore = useLoginStore()
+  if (to.matched.some(r => r.meta.requiresAdministratorAuth)) {
+    // esta ruta requiere autenticación, verifica si inició sesión
+    // si no, redirigir a la página de inicio de sesión.
+
+    if (!loginStore.user) {
+      next({
+        name: 'administrator.login',
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // siempre llamar next()!
+  }
 })
 
 export default router

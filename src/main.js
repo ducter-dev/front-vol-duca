@@ -3,9 +3,23 @@ import store from './store'
 import App from './App.vue'
 import './index.css'
 import router from './router'
-import 'flowbite'
+import VueTippy from 'vue-tippy'
+import mitt from 'mitt';
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import Breadcrumb from "./layout/components/Breadcrumb/Index.vue"
+import Lplugin from "./layout/index"
 
-createApp(App)
+const emitter = mitt();
+
+const app = createApp(App)
+    .component('Datepicker', Datepicker)
+    .component('Breadcrumb', Breadcrumb)
     .use(store)
     .use(router)
-    .mount('#app')
+    .use(VueTippy)
+    .use(Lplugin)
+
+app.config.globalProperties.emitter = emitter
+
+app.mount('#app')

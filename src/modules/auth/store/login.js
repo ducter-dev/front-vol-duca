@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import api_volumetricos from '../../../config'
+import api_volumetricos from '@/config'
 
 export const useLoginStore = defineStore('login', {
   id: 'login',
@@ -18,26 +18,56 @@ export const useLoginStore = defineStore('login', {
           usuario: usuario,
           password,
         }
-        const res = await api_volumetricos.post('/api/users/login', dataForm)
-        console.log("🚀 ~ file: login.js:22 ~ login ~ res:", res)
+        const res = await api_volumetricos.post('/users/login', dataForm)
         const { data, status } = res
         const { access_token } = data.data.user
-        console.log("🚀 ~ file: login.js:23 ~ login ~ data.data.user:", data.data.user)
-        console.log("🚀 ~ file: login.js:23 ~ login ~ access_token:", access_token)
         delete user.password
         this.user = data.data.user 
         this.token = access_token
         localStorage.setItem('token', access_token)
-        return res
-        
+        localStorage.setItem('user', JSON.stringify(this.user))
+        const obj = {
+          ok: true, detail: data.data.user, status: 'authenticated'
+        }
+        console.log("🚀 ~ file: login.js:38 ~ login ~ obj:", obj)
+        return obj
       } catch (error) {
-        return error
+        if (error.response) {
+          // La respuesta fue hecha y el servidor respondió con un código de estado
+          // que esta fuera del rango de 2xx
+          if (error.response.status == 419) {
+            // Si existe validación del lado del servidor aplicar llenado de errores aquí
+            const obj = {
+              ok: false, detail:error.response.data.message, status: error.response.status 
+            }
+            return obj
+          } else {
+            // Si existe error manda un toast
+            const obj = {
+              ok: false, detail:`Vaya, algo salió mal en nuestros servidores. <br> Código de error: <strong>${error.response.status}</strong>`, status: error.response.status 
+            }
+            return obj
+          }
+        } else if (error.request) {
+          // La petición fue hecha pero no se recibió respuesta
+          // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
+          // http.ClientRequest en node.js
+          const obj = {
+            ok: false, detail: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
+          }
+          return obj
+        } else {
+          const obj = {
+            ok: false, detail:"Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
+          }
+          return obj
+        }
       }
     },
 
     async logout() {
       try {
-        const res = await api_volumetricos.post('/api/users/logout')
+        const res = await api_volumetricos.post('/users/logout')
         if (res.status == 201) {
           this.token = null
           this.user = null
@@ -56,7 +86,7 @@ export const useLoginStore = defineStore('login', {
           contrasena,
           contrasena_confirmation
         }
-        const { data } = await api_volumetricos.post(`/api/users/updatePassword/${id}`, form)
+        const { data } = await api_volumetricos.post(`/users/updatePassword/${id}`, form)
         this.usuarioSelected = {}
         const obj = {
           ok: true, data: data.data
@@ -75,7 +105,7 @@ export const useLoginStore = defineStore('login', {
       const form = {
         correo
       }
-      const { data, status } = await api_volumetricos.post(`/api/users/activarCuenta`, form)
+      const { data, status } = await api_volumetricos.post(`/users/activarCuenta`, form)
       if (status === 201) {
         const obj = {
           ok: true, data: data.data
@@ -94,7 +124,7 @@ export const useLoginStore = defineStore('login', {
       const obj = {
         correo
       }
-      const { data, status } = await api_volumetricos.post(`/api/users/recuperarPassword`, obj)
+      const { data, status } = await api_volumetricos.post(`/users/recuperarPassword`, obj)
       if (status === 200) {
         const obj = {
           ok: true, data: data.data
@@ -141,5 +171,6 @@ export const useLoginStore = defineStore('login', {
         return obj
       }
     }
-  }
+  },
+  persist: true
 })

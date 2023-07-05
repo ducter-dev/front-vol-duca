@@ -1,0 +1,116 @@
+<script setup>
+import { computed } from "vue"
+import useAuth from "../../../modules/auth/composables/useAuth"
+import useBitacora from "../../../modules/bitacora/composables"
+import useDashboard from "../../../modules/dashboard/composables/useDashboard"
+import useToast from "../../../modules/dashboard/composables/useToast"
+
+defineProps({
+    labelButton: {
+        type: String,
+        default: 'Label'
+    },
+    valueFiller: {
+        type: String,
+        default: ''
+    },
+    Lname: {
+        type: String,
+        default: 'LCardListActionButton',
+    },
+})
+
+/* const { liberarLlenadera, desAsignarLlenadera} = useDashboard() */
+const { getCurrentUser } = useAuth()
+const currentUser = computed(() => getCurrentUser())
+const { insertBitacora } = useBitacora()
+
+const { addToast } = useToast()
+
+/* const liberarLlen = async (llenadera) => {
+    const { data, status } = await liberarLlenadera(parseInt(llenadera))
+
+    if (status == 201) {
+        const objBitacora = {
+            user: currentUser.value.id,
+            actividad: `El usuario ${currentUser.value.username} ${data.message}.`,
+            evento: 4,
+        }
+        insertBitacora(objBitacora)
+        addToast({
+            message: {
+                title: "Éxito!",
+                message: `${data.message}`,
+                type: "success"
+            },
+        });
+    } else {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: data,
+                type: "error",
+                component: "Liberar Llenadera - onSubmit()"
+            },
+        })
+    }
+
+}
+
+const deasignarLlen = async (llenadera) => {
+    const { data, status } = await desAsignarLlenadera(parseInt(llenadera))
+
+    if (status == 201) {
+        const objBitacora = {
+            user: currentUser.value.id,
+            actividad: `El usuario ${currentUser.value.username} ${data.message}.`,
+            evento: 4,
+        }
+        insertBitacora(objBitacora)
+        addToast({
+            message: {
+                title: "Éxito!",
+                message: `${data.message}`,
+                type: "success"
+            },
+        });
+    } else {
+        addToast({
+            message: {
+                title: "¡Error!",
+                message: data,
+                type: "error",
+                component: "Desasignar Llenadera - onSubmit()"
+            },
+        })
+    }
+} */
+
+
+</script>
+<template>
+    <li class="py-1">
+        <div class="flex items-center justify-between space-x-2">
+            <div class="w-20 p-1">
+                <p class="text-sm font-medium text-center truncate text-slate-900 dark:text-white">
+                    ALgo
+                </p>
+            </div>
+            <div class="inline-flex shadow-sm" role="group">
+                <button type="button"
+                    class="p-1 text-sm font-medium text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-500 focus:bg-red-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-red-700 dark:focus:bg-red-700"
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="currentColor"
+                        viewBox="0 0 512 512">
+                        <path
+                            d="M78.6 5C69.1-2.4 55.6-1.5 47 7L7 47c-8.5 8.5-9.4 22-2.1 31.6l80 104c4.5 5.9 11.6 9.4 19 9.4h54.1l109 109c-14.7 29-10 65.4 14.3 89.6l112 112c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-112-112c-24.2-24.2-60.6-29-89.6-14.3l-109-109V104c0-7.5-3.5-14.5-9.4-19L78.6 5zM19.9 396.1C7.2 408.8 0 426.1 0 444.1C0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9L233.7 374.3c-7.8-20.9-9-43.6-3.6-65.1l-61.7-61.7L19.9 396.1zM512 144c0-10.5-1.1-20.7-3.2-30.5c-2.4-11.2-16.1-14.1-24.2-6l-63.9 63.9c-3 3-7.1 4.7-11.3 4.7H352c-8.8 0-16-7.2-16-16V102.6c0-4.2 1.7-8.3 4.7-11.3l63.9-63.9c8.1-8.1 5.2-21.8-6-24.2C388.7 1.1 378.5 0 368 0C288.5 0 224 64.5 224 144l0 .8 85.3 85.3c36-9.1 75.8 .5 104 28.7L429 274.5c49-23 83-72.8 83-130.5zM56 432a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z" />
+                    </svg>
+                </button>
+                <button type="button"
+                    class="inline-flex items-center p-1 text-sm font-medium bg-transparent border text-slate-900 border-slate-900 hover:bg-slate-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-slate-500 focus:bg-slate-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-slate-700 dark:focus:bg-slate-700"
+                    >
+                    {{ labelButton }}
+                </button>
+            </div>
+    </div>
+</li></template>
