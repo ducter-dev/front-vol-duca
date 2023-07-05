@@ -12,6 +12,7 @@ api_volumetricos.interceptors.request.use((config) => {
 
   config.headers = {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
     authorization: `Bearer ${localStorage.getItem('token')}`
   }
   
@@ -19,7 +20,7 @@ api_volumetricos.interceptors.request.use((config) => {
 })
 
 
-api_volumetricos.interceptors.response.use((response) => {
+/* api_volumetricos.interceptors.response.use((response) => {
   var encrypted_json = JSON.parse(atob(response.data))
   console.log("🚀 ~ file: index.js:24 ~ api_volumetricos.interceptors.response.use ~ encrypted_json:", encrypted_json)
   
@@ -78,5 +79,5 @@ api_volumetricos.interceptors.response.use((response) => {
     })
   }
 })
-
+ */
 export default api_volumetricos
