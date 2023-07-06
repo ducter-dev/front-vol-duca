@@ -4,12 +4,12 @@ export default {
   children: [
     {
       path: '',
-      name: 'Home',
+      name: 'dashboard.home',
       component: () => import('../views/Dashboard.vue')
     },
     {
       path: 'configuracion',
-      name: 'configuration',
+      name: 'dashboard.configuration',
       component: () => import('../views/Configuracion.vue')
     },
   ]

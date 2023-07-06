@@ -1,12 +1,12 @@
 <script setup>
 import IconHouse from "../../../assets/icons/house.svg"
-import IconGasPump from "../../../assets/icons/gas-pump.svg"
-import IconTruckFast from "../../../assets/icons/truck-fast.svg"
-import IconTruck from "../../../assets/icons/truck.svg"
-import IconPause from '../../../assets/icons/pause.svg'
-import IconSliders from '../../../assets/icons/sliders.svg'
-import IconFile from '../../../assets/icons/file-arrow-down-solid.svg'
-import IconBook from '../../../assets/icons/book-solid.svg'
+import IconDictamen from '@/assets/icons/file-invoice-dollar-solid.svg'
+import IconDensidades from '@/assets/icons/filtrar.svg'
+import IconArchivo from '@/assets/icons/document.svg'
+import IconError from '@/assets/icons/triangle-exclamation-solid.svg'
+import IconConfig from '@/assets/icons/gear-solid.svg'
+
+
 </script>
 <template>
   <div class="flex-1 overflow-y-auto">
@@ -19,7 +19,7 @@ import IconBook from '../../../assets/icons/book-solid.svg'
     <nav class="pb-4 mb-8 space-y-5 border-t border-transparent sidebar md:border-slate-200 dark:border-slate-700">
       <div>
         <li>
-          <router-link :to="{ name: 'Home' }"
+          <router-link :to="{ name: 'dashboard.home' }"
             exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
             class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
             <IconHouse class="w-5 h-5 mr-3 -ml-1 shrink-0" />
@@ -31,48 +31,36 @@ import IconBook from '../../../assets/icons/book-solid.svg'
         <h5 class="mb-2 ml-5 text-xs font-semibold leading-4 tracking-wider text-blue-700 uppercase menu-heading">
           Menu
         </h5>
-        <!-- <router-link :to="{ name: 'entries' }"
+        <router-link :to="{ name: 'dictamenes.home' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruckFast class="w-5 h-5 mr-3 -ml-1 shrink-0" />
-          <span class="truncate">Entradas</span>
+          <IconDictamen class="w-5 h-5 mr-3 -ml-1 shrink-0" fill="currentColor"/>
+          <span class="truncate">Dictámenes</span>
         </router-link>
-        <router-link :to="{ name: 'waitinglist' }"
+        <router-link :to="{ name: 'densidades.home' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconPause class="w-5 h-5 mr-3 -ml-1 shrink-0" />
-          <span class="truncate">Espera</span>
+          <IconDensidades class="w-5 h-5 mr-3 -ml-1 shrink-0" fill="currentColor"/>
+          <span class="truncate">Densidades</span>
         </router-link>
-        <router-link :to="{ name: 'services' }"
+        <router-link :to="{ name: 'archivos.home' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconGasPump class="w-5 h-5 mr-3 -ml-1 shrink-0" />
-          <span class="truncate">Servicio</span>
+          <IconArchivo class="w-5 h-5 mr-3 -ml-1 shrink-0" fill="currentColor"/>
+          <span class="truncate">Archivos</span>
         </router-link>
-        <router-link :to="{ name: 'exits' }"
+        <router-link :to="{ name: 'errores.home' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconTruck class="w-5 h-5 mr-3 -ml-1 shrink-0" />
-          <span class="truncate">Salidas</span>
+          <IconError class="w-5 h-5 mr-3 -ml-1 shrink-0" fill="currentColor"/>
+          <span class="truncate">Errores</span>
         </router-link>i
-        <router-link :to="{ name: 'reports' }"
+        <router-link :to="{ name: 'dashboard.configuration' }"
           exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
           class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconFile class="w-5 h-5 mr-3 -ml-1 shrink-0" />
-          <span class="truncate">Reportes</span>
-        </router-link>
-        <router-link :to="{ name: 'records' }"
-          exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
-          class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconBook fill="currentColor" class="w-5 h-5 mr-3 -ml-1 shrink-0" />
-          <span class="truncate">Bitácora</span>
-        </router-link>
-        <router-link :to="{ name: 'configuration' }"
-          exact-active-class="border-blue-700 text-slate-600 dark:text-white bg-slate-50 dark:bg-slate-800 hover:border-blue-700"
-          class="flex items-center py-2 pl-5 pr-4 mt-1 text-sm font-medium border-l-4 border-transparent group focus:outline-none text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700">
-          <IconSliders class="w-5 h-5 mr-3 -ml-1 shrink-0" />
+          <IconConfig class="w-5 h-5 mr-3 -ml-1 shrink-0" fill="currentColor"/>
           <span class="truncate">Configuración</span>
-        </router-link> -->
+        </router-link>
       </div>
     </nav>
   </div>

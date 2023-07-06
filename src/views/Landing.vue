@@ -10,7 +10,7 @@
             style="filter: brightness(0) invert(1);">
           <div class="py-10 font-sans font-bold leading-tight text-center sm:text-4xl xl:text-5xl">Volumétricos DUCA</div>
 
-          <router-link :to="{ name: 'login' }"
+          <router-link :to="{ name: 'auth.login' }"
             class="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-white border-2 border-white hover:text-red-500 group hover:bg-slate-50">
             <span
               class="absolute left-0 block w-full h-0 transition-all bg-white opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>

@@ -68,7 +68,8 @@ export const useLoginStore = defineStore('login', {
     async logout() {
       try {
         const res = await api_volumetricos.post('/users/logout')
-        if (res.status == 201) {
+        console.log("🚀 ~ file: login.js:71 ~ logout ~ res:", res)
+        if (res.status == 200) {
           this.token = null
           this.user = null
         }

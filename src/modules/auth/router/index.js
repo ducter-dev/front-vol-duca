@@ -4,22 +4,22 @@ export default {
   children: [
     {
       path: '',
-      name: 'login',
+      name: 'auth.login',
       component: () => import('../views/Login.vue')
     },
     {
       path: 'registro',
-      name: 'registro',
+      name: 'auth.register',
       component: () => import('../views/Register.vue')
     },
     {
       path: 'resetpassword',
-      name: 'resetpassword',
+      name: 'auth.resetpassword',
       component: () => import('../views/ResetPassword.vue')
     },    
     {
       path: 'rescutepassword',
-      name: 'rescutepassword',
+      name: 'auth.rescutepassword',
       component: () => import('../views/RescutePassword.vue')
     },
   ]
