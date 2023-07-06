@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import authRouter from './modules/auth/router'
 import dashboardRouter from './modules/dashboard/router'
 import { useLoginStore } from './modules/auth/store/login'
+import archivosRouter from './modules/archivos/router'
+import densidadesRouter from './modules/densidades/router'
+import dictamenesRouter from './modules/dictamenes/router'
+import erroresRouter from './modules/errores/router'
 
 const routes = [
   {
@@ -16,6 +20,22 @@ const routes = [
   {
     path: '/dashboard',
     ...dashboardRouter
+  },
+  {
+    path: '/archivos',
+    ...archivosRouter
+  },
+  {
+    path: '/dictamenes',
+    ...dictamenesRouter
+  },
+  {
+    path: '/densidades',
+    ...densidadesRouter
+  },
+  {
+    path: '/errores',
+    ...erroresRouter
   },
 ]
 
@@ -35,7 +55,7 @@ router.beforeEach((to, from, next) => {
 
     if (!loginStore.user) {
       next({
-        name: 'administrator.login',
+        name: 'auth.login',
       })
     } else {
       next()

@@ -16,7 +16,6 @@ const checkUser = () => {
   
   if (!getCurrentUser()) {
     const user = getLocalUser()
-    console.log("🚀 ~ file: DashboardLayout.vue:19 ~ checkUser ~ user:", user)
   }
 
 }

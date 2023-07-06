@@ -15,8 +15,6 @@ const useAuth = () => {
   }
 
   const logout = async (bitacora) => {
-    console.log("🚀 ~ file: useAuth.js:17 ~ logout ~ bitacora:", bitacora)
-    await insertBitacora(bitacora)
     store.logout()
     return true
   }

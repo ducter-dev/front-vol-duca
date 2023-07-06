@@ -10,10 +10,11 @@ import DropdownLink from "../Dropdown/DropdownLink.vue"
 import Button from "../Button.vue"
 import { useRouter } from "vue-router"
 import { toggleSidebar, isDark, toggleDarkMode,toggleCollapsableMode, isCollapse } from "../../composables"
-import { useFullscreen } from "@vueuse/core";
+import { useFullscreen } from "@vueuse/core"
 import useAuth from "../../../modules/auth/composables/useAuth"
 import { computed, ref } from "vue"
-import useToast from "../../../modules/dashboard/composables/useToast";
+import useToast from "../../../modules/dashboard/composables/useToast"
+import { format } from 'date-fns'
 
 const { addToast } = useToast()
 const { isFullscreen, toggle: toggleFullScreen } = useFullscreen()
@@ -23,15 +24,10 @@ const userName = computed(() => getUserName())
 const router = useRouter()
 const currentUser = computed(() => getCurrentUser())
 
+const date = ref(new Date())
+
 const exitApp = async () => {
-    const oldUser = currentUser.value
-    const objBitacora = {
-        user: oldUser.id,
-        actividad: `El usuario ${oldUser.username} ha cerrado sesión.`,
-        evento: 2,
-    }
-    
-    const resp = await logout(objBitacora)
+    const resp = await logout(currentUser.value)
     if (resp) {
         addToast({
             message: {
@@ -40,7 +36,7 @@ const exitApp = async () => {
                 type: "info"
             },
         })
-        router.push({ name: 'login' })
+        router.push({ name: 'auth.login' })
     }
 }
 </script>
