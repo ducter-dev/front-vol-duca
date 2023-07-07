@@ -3,14 +3,13 @@ import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import useDictamen from '../composables/dictamen'
+import useDensidad from '../composables/densidades'
 import useEventsBus from "@/layout/eventBus"
 import useBitacora from '../../bitacora/composables'
 import useAuth from '../../auth/composables/useAuth'
 import useToast from '../../dashboard/composables/useToast'
-import useCliente from '../../clientes/composables/cliente'
 import IconPlus from '@/assets/icons/plus-solid.svg'
-import FormDictamen from '../components/FormDictamen.vue'
+import FormDensidad from '../components/FormDensidad.vue'
 
 
 /* Declaración de atributos asignables */
@@ -19,48 +18,34 @@ const { addToast } = useToast()
 const { emit, bus } = useEventsBus()
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
-const { insertDictamen } = useDictamen()
+const { insertDensidad } = useDensidad()
 const currentUser = computed(() => getCurrentUser())
-const { fetchClientes, getClientes } = useCliente()
-
-const clientesSt = computed(() => getClientes())
-
 const loader = ref(false)
 
 /* Declaración de métodos */
 
-const formatPickerInicio = () => {
-  return format(form.fechaInicioDictamen, 'dd-MM-yyyy')
-}
-
-const formatPickerEmision = () => {
-  return format(form.fechaEmisionDictamen, 'dd-MM-yyyy')
-}
-
-async function fetchClientesDB() {
-  const clientes = await fetchClientes()
-}
-
 async function onSubmit(form) {
-  const { data, status, message } = await insertDictamen(form)
+  loader.value = true
+  const { data, status, message } = await insertDensidad(form)
+  console.log("🚀 ~ file: Create.vue:55 ~ onSubmit ~ data:", data)
   if (status == 200) {
-    loader.value = false
-    emit("successRegistrationDictamen", true)
-    
+    emit("successRegistrationDensidad", true)
     /* const objBitacora = {
       user: currentUser.value.id,
-      actividad: `El usuario ${currentUser.value.username} registró al dictamen ${data.folioDictamen}.`,
+      actividad: `El usuario ${currentUser.value.username} registró al densidad ${data.folioDictamen}.`,
       evento: 1,
     }
     insertBitacora(objBitacora) */
     addToast({
       message: {
         title: "Éxito!",
-        message: `Se agregó el dictamen con folio ${data.folioDictamen} del listado.`,
+        message: `Se agregó el densidad con folio ${data.id} del listado.`,
         type: "success"
       },
+
     })
-    router.push({ name: 'dictamenes.home' })
+    loader.value = false
+    router.push({ name: 'densidades.home' })
   } else {
     loader.value = false
     addToast({
@@ -83,11 +68,6 @@ watch(() => bus.value.get('ErrorData'), (message) => {
         component: "create - ErrorData()"
       },
     })
-})
-
-
-onMounted(() => {
-  fetchClientesDB()
 })
 
 </script>
@@ -132,9 +112,9 @@ onMounted(() => {
             />
           </svg>
           <router-link
-            :to="{ name: 'dictamenes.home' }"
+            :to="{ name: 'densidades.home' }"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
-            >Dictámenes</router-link
+            >Densidad</router-link
           >
         </div>
       </li>
@@ -157,7 +137,7 @@ onMounted(() => {
             href="#"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
             aria-current="page"
-            >Nuevo Dictamen</a
+            >Nueva Densidad</a
           >
         </div>
       </li>
@@ -167,11 +147,11 @@ onMounted(() => {
     <h2
       class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
     >
-      Agregar dictamen
+      Agregar densidad
     </h2>
   </div>
   <div class="flex items-center justify-center my-4 ">
-    <FormDictamen @submitForm="onSubmit" />
+    <FormDensidad @submitForm="onSubmit" />
   </div>
   
 </template>

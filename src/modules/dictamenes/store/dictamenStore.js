@@ -72,7 +72,6 @@ export const useDictamenStore = defineStore('dictamen', {
 
     async update(form) {
       try {
-        console.log(form)
         const { data, status} = await api_volumetricos.put(`/dictamenes/${form.id}`, form)
         const dict = this.dictamenes.find(dict => dict.id == form.id)
         const { dictamen } = data.data
