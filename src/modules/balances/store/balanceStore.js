@@ -13,7 +13,7 @@ export const useBalanceStore = defineStore('balance', {
   actions: {
     async fetch () {
       try {
-        const { data } = await api_volumetricos.get('/api/balances')
+        const { data } = await api_volumetricos.get('/balances')
         this.balances = data.data
         const obj = {
           ok: true, data: this.balances
@@ -29,7 +29,7 @@ export const useBalanceStore = defineStore('balance', {
     },
 
     async insert(balance) {
-      const { data } = await api_volumetricos.post('/api/balances', balance)
+      const { data } = await api_volumetricos.post('/balances', balance)
       const bal = data.data
       this.balances.push(bal)
       const obj = {
@@ -39,7 +39,7 @@ export const useBalanceStore = defineStore('balance', {
     },
 
     async update(balance) {
-      const { data } = await api_volumetricos.put(`/api/balances/${balance.id}`, balance)
+      const { data } = await api_volumetricos.put(`/balances/${balance.id}`, balance)
       const dict = this.balances.find(dict => dict.id == balance.id)
       console.log(dict)
       const { id, rfcDictamen, loteDictamen, folioDictamen, fechaEmisionDictamen, resultadoDictamen, densidad, volumen, cliente_id } = data.data
@@ -60,7 +60,7 @@ export const useBalanceStore = defineStore('balance', {
     },
 
     async delete(balance) {
-      const { data } = await api_volumetricos.delete(`/api/balances/${balance.id}`)
+      const { data } = await api_volumetricos.delete(`/balances/${balance.id}`)
       this.balances = this.balances.filter(dict => dict.id != balance.id)
       const obj = {
         ok: true, data: data.data
@@ -70,7 +70,7 @@ export const useBalanceStore = defineStore('balance', {
 
     async fetchBalance(idBalance) {
       try {
-        const { data } = await api_volumetricos.get(`/api/balances/${idBalance}`)
+        const { data } = await api_volumetricos.get(`/balances/${idBalance}`)
         const obj = {
           ok: true, data: data.data
         }
