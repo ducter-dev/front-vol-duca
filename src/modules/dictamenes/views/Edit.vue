@@ -58,7 +58,7 @@ async function onSubmit(form) {
     addToast({
       message: {
         title: "Éxito!",
-        message: `Se agregó el dictamen con folio ${data.folioDictamen} a la lista de espera.`,
+        message: `Se actualizó el dictamen con folio ${data.folioDictamen} a la lista de espera.`,
         type: "success"
       },
     })

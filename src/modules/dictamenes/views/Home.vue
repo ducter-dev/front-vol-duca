@@ -23,12 +23,14 @@ import useEventsBus from "../../../layout/eventBus"
 import useToast from "../../dashboard/composables/useToast"
 import useDictamen from '../composables/dictamen'
 import IconPlus from '@/assets/icons/plus-solid.svg'
-import Paginate from '../components/Paginate.vue'
+import Paginate from '@/layout/components/Paginate/Index.vue'
+import useBalance from '@/modules/balances/composables/balance';
 
 /* Declaración de atributos asignables */
 
 const { bus } = useEventsBus()
 const { getDictamenes, selectDictamen, setPaginacion, fetchDictamenesLink } = useDictamen()
+const { fetchBalances } = useBalance()
 const dictamenesList = computed(() => getDictamenes())
 const { addToast } = useToast()
 const date = ref(new Date())
@@ -149,9 +151,9 @@ const selectLink = (link) => {
   obtenerDictamenesLink(link)
 }
 
-watch(() => bus.value.get('successRegistrationDictamen'), (val) => {
-  fetchDataDictamenes(dateFormated.value)
-})
+/* watch(() => bus.value.get('successRegistrationDictamen'), (val) => {
+  fetchDataDictamenes()
+}) */
 
 /**
  *  Al montar el componente evalua la disponibilidad y existencia de la información
@@ -162,13 +164,14 @@ watch(() => bus.value.get('successRegistrationDictamen'), (val) => {
 
 onMounted(() => {
     //Condicional para verificar existencia de información en el store
-    if (dictamenesList.value.length != 0) {
+    /* if (dictamenesList.value.length != 0) {
         // Establece la información del store
         setDataFromResult(dictamenesList.value)
     } else {
         // Realiza la petición al servidor
-        fetchDataDictamenes(dateFormated.value)
-    }
+      } */
+    fetchBalances()
+    fetchDataDictamenes()
 })
 
 </script>
@@ -238,7 +241,7 @@ onMounted(() => {
               </legend>
               <div>
                 <button class="p-2" @click="goToInsert()">
-                  <span v-tippy="'Actualizar'">
+                  <span v-tippy="'Ingresar'">
                     <IconPlus class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary" fill="currentColor" />
                   </span>
                 </button>
@@ -253,7 +256,7 @@ onMounted(() => {
               <div class="col-span-2">
                 <Datepicker v-model="date" locale="es" :maxDate="new Date()" cancelText="Cancelar" selectText="Seleccionar"
                   placeholder="Seleccione una fecha" :enableTimePicker="false" :format="formatPicker" autoApply
-                  @update:model-value="fetchDataDictamenes(dateFormated)" :clearable="false" />
+                  @update:model-value="fetchDataDictamenes()" :clearable="false" />
               </div>
             </div>
             <LTable :loader="loading">

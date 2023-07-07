@@ -3,14 +3,14 @@ import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import useDictamen from '../composables/dictamen'
+import useDensidad from '../composables/densidades'
 import useEventsBus from "@/layout/eventBus"
 import useBitacora from '../../bitacora/composables'
 import useAuth from '../../auth/composables/useAuth'
 import useToast from '../../dashboard/composables/useToast'
-import useCliente from '../../clientes/composables/cliente'
 import IconPlus from '@/assets/icons/plus-solid.svg'
-import FormDictamen from '../components/FormDictamen.vue'
+import FormDensidad from '../components/FormDensidad.vue'
+import useBalance from '@/modules/balances/composables/balance';
 
 
 /* Declaración de atributos asignables */
@@ -19,48 +19,34 @@ const { addToast } = useToast()
 const { emit, bus } = useEventsBus()
 const { insertBitacora } = useBitacora()
 const { getCurrentUser } = useAuth()
-const { insertDictamen } = useDictamen()
+const { updateDensidad } = useDensidad()
+const { fetchBalances } = useBalance()
 const currentUser = computed(() => getCurrentUser())
-const { fetchClientes, getClientes } = useCliente()
-
-const clientesSt = computed(() => getClientes())
 
 const loader = ref(false)
 
 /* Declaración de métodos */
 
-const formatPickerInicio = () => {
-  return format(form.fechaInicioDictamen, 'dd-MM-yyyy')
-}
-
-const formatPickerEmision = () => {
-  return format(form.fechaEmisionDictamen, 'dd-MM-yyyy')
-}
-
-async function fetchClientesDB() {
-  const clientes = await fetchClientes()
-}
-
 async function onSubmit(form) {
-  const { data, status, message } = await insertDictamen(form)
+  const res = await updateDensidad(form)
+  const { data, status, message } = res
   if (status == 200) {
     loader.value = false
-    emit("successRegistrationDictamen", true)
     
     /* const objBitacora = {
       user: currentUser.value.id,
-      actividad: `El usuario ${currentUser.value.username} registró al dictamen ${data.folioDictamen}.`,
+      actividad: `El usuario ${currentUser.value.username} registró al densidad ${data.foliodensidad}.`,
       evento: 1,
     }
     insertBitacora(objBitacora) */
     addToast({
       message: {
         title: "Éxito!",
-        message: `Se agregó el dictamen con folio ${data.folioDictamen} del listado.`,
+        message: `Se actualizó el densidad con consecutivo ${data.id} a la lista.`,
         type: "success"
       },
     })
-    router.push({ name: 'dictamenes.home' })
+    router.push({ name: 'densidades.home' })
   } else {
     loader.value = false
     addToast({
@@ -68,7 +54,7 @@ async function onSubmit(form) {
         title: "¡Error!",
         message: message,
         type: "error",
-        component: "create - onSubmit()"
+        component: "edit - onSubmit()"
       },
     })
   }
@@ -85,9 +71,8 @@ watch(() => bus.value.get('ErrorData'), (message) => {
     })
 })
 
-
 onMounted(() => {
-  fetchClientesDB()
+  fetchBalances()
 })
 
 </script>
@@ -132,7 +117,7 @@ onMounted(() => {
             />
           </svg>
           <router-link
-            :to="{ name: 'dictamenes.home' }"
+            :to="{ name: 'densidades.home' }"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
             >Dictámenes</router-link
           >
@@ -157,7 +142,7 @@ onMounted(() => {
             href="#"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
             aria-current="page"
-            >Nuevo Dictamen</a
+            >Editar densidad</a
           >
         </div>
       </li>
@@ -167,11 +152,11 @@ onMounted(() => {
     <h2
       class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
     >
-      Agregar dictamen
+      Editar densidad
     </h2>
   </div>
   <div class="flex items-center justify-center my-4 ">
-    <FormDictamen @submitForm="onSubmit" />
+    <FormDensidad @submitForm="onSubmit" />
   </div>
   
 </template>

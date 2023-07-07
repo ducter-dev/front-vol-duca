@@ -104,6 +104,7 @@ export default {
       }
       console.log("🚀 ~ file: FormDictamen.vue:105 ~ handleSubmit ~ obj:", obj)
       context.emit('submitForm', obj)
+      resetform()
     }
 
     const goBack = () => {
