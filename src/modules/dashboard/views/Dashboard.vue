@@ -9,7 +9,8 @@ import IconCheck from '@/assets/icons/check-solid.svg'
 import IconDanger from '@/assets/icons/icon-exclamation.svg'
 import CardDescargaDiaria from '@/layout/components/Card/CardDescargaDiaria.vue'
 import CardDescargaMensual from '@/layout/components/Card/CardDescargaMensual.vue'
-
+import useBalance from '@/modules/balances/composables/balance'
+import useCliente from '../../clientes/composables/cliente'
 
 export default {
   components: {
@@ -19,6 +20,9 @@ export default {
     const router = useRouter()
     const { addToast } = useToast()
     const { emit } = useEventsBus()
+    const { fetchBalances } = useBalance()
+    const { fetchClientes } = useCliente()
+
     const { pause, resume, isActive } = useIntervalFn(() => {
       emit("reloadData", true)
     }, 100000)
@@ -59,6 +63,8 @@ export default {
 
 
     onMounted(() => {
+      fetchBalances()
+      fetchClientes()
     })
 
     return {
