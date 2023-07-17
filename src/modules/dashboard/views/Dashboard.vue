@@ -2,7 +2,7 @@
 import useDashboard from '../composables/useDashboard'
 import { useRouter } from 'vue-router'
 import useToast from "../../dashboard/composables/useToast"
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, computed } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
 import useEventsBus from "../../../layout/eventBus"
 import IconCheck from '@/assets/icons/check-solid.svg'
@@ -11,6 +11,7 @@ import CardDescargaDiaria from '@/layout/components/Card/CardDescargaDiaria.vue'
 import CardDescargaMensual from '@/layout/components/Card/CardDescargaMensual.vue'
 import useBalance from '@/modules/balances/composables/balance'
 import useCliente from '../../clientes/composables/cliente'
+import useEmpresa from '../../empresas/composables/empresa'
 
 export default {
   components: {
@@ -22,20 +23,14 @@ export default {
     const { emit } = useEventsBus()
     const { fetchBalances } = useBalance()
     const { fetchClientes } = useCliente()
+    const { fetchEmpresas, getCurrentEmpresa } = useEmpresa()
 
     const { pause, resume, isActive } = useIntervalFn(() => {
       emit("reloadData", true)
     }, 100000)
 
     const actualizado = ref('actual')
-    const empresa = reactive({
-      nombre: 'Nombre Empresa',
-      rfcContr: 'XXXX-XXXXXX-XXX',
-      rfcRepre: 'XXXX-XXXXXX-XXX',
-      tipoCaracter: 'Ducto',
-      proovedor: 'xxxxx',
-      claveInstalacion: 'ZZZZ-ZZZZ-ZZZ'
-    })
+    const empresa = computed( () => getCurrentEmpresa())
 
     const showDiario = ref(true)
 
@@ -61,10 +56,10 @@ export default {
       if(estado == 'actual'){estatus = true}
     }
 
-
     onMounted(() => {
       fetchBalances()
       fetchClientes()
+      fetchEmpresas()
     })
 
     return {
@@ -91,11 +86,11 @@ export default {
             </h5>
           </div>
           <div class="w-full h-full grid grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] mx-14">
-            <span class="mb-1 text-dark">RFC Contribuyente: {{ empresa.rfcContr }} </span>
-            <span class="mb-1 text-dark">RFC Representante: {{ empresa.rfcRepre }}</span>
-            <span class="mb-1 text-dark">Tipo caracter: {{ empresa.tipoCaracter }} </span>
-            <span class="mb-1 text-dark">Proveedor: {{ empresa.proovedor }} </span>
-            <span class="mb-1 text-dark">Clave instalación: {{ empresa.claveInstalacion }} </span>
+            <span class="mb-1 text-dark">RFC Contribuyente: {{ empresa.rfc_contribuyente }} </span>
+            <span class="mb-1 text-dark">RFC Representante: {{ empresa.rfc_representante }}</span>
+            <span class="mb-1 text-dark">Tipo caracter: {{ empresa.tipo_caracter }} </span>
+            <span class="mb-1 text-dark">Proveedor: {{ empresa.proveedor }} </span>
+            <span class="mb-1 text-dark">Clave instalación: {{ empresa.clave_instalacion }} </span>
           </div>
         </div>
       </div>

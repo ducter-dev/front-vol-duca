@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import authRouter from './modules/auth/router'
-import dashboardRouter from './modules/dashboard/router'
+import authRouter from './modules/auth/routes'
+import dashboardRouter from './modules/dashboard/routes'
 import { useLoginStore } from './modules/auth/store/login'
 import archivosRouter from './modules/archivos/router'
-import densidadesRouter from './modules/densidades/router'
-import dictamenesRouter from './modules/dictamenes/router'
-import erroresRouter from './modules/errores/router'
+import densidadesRouter from './modules/densidades/routes'
+import dictamenesRouter from './modules/dictamenes/routes'
+import erroresRouter from './modules/errores/routes'
+import empresaRouter from './modules/empresas/routes'
 
 const routes = [
   {
@@ -35,6 +36,10 @@ const routes = [
   },
   {
     path: '/errores',
+    ...erroresRouter
+  },
+  {
+    path: '/empresas',
     ...erroresRouter
   },
 ]
