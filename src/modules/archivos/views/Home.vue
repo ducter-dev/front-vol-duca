@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import useArchivo from '../composables/archivos';
 import CardDescargaDiaria from '@/layout/components/Card/CardDescargaDiaria.vue'
 import IconPlus from '@/assets/icons/plus-solid.svg'
-import TablaArchivosMensuales from '../components/TableArchivosMensuales.vue'
 import useEmpresa from '../../empresas/composables/empresa'
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import useToast from "../../dashboard/composables/useToast"
