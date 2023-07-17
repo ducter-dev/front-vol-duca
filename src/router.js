@@ -38,10 +38,6 @@ const routes = [
     path: '/errores',
     ...erroresRouter
   },
-  {
-    path: '/empresas',
-    ...erroresRouter
-  },
 ]
 
 const history = createWebHistory()
