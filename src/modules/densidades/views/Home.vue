@@ -24,7 +24,7 @@ import useToast from "../../dashboard/composables/useToast"
 import useDensidad from '../composables/densidades'
 import IconPlus from '@/assets/icons/plus-solid.svg'
 import Paginate from '@/layout/components/Paginate/Index.vue'
-import useBalance from '@/modules/balances/composables/balance';
+import useBalance from '@/modules/balances/composables/balance'
 
 /* Declaración de atributos asignables */
 
@@ -132,18 +132,8 @@ const formatPicker = () => {
  */
 
 onMounted(() => {
-  console.log(0)
-    //Condicional para verificar existencia de información en el store
-    /* console.log("🚀 ~ file: Home.vue:136 ~ onMounted ~ densidadesList:", densidadesList)
-    if (densidadesList.value.length != 0) {
-        // Establece la información del store
-        setDataFromResult(densidadesList.value)
-    } else {
-      console.log(1)
-        // Realiza la petición al servidor
-      } */
-    fetchDataDensidades()
-    fetchBalances()
+  fetchDataDensidades()
+  fetchBalances()
 })
 
 </script>

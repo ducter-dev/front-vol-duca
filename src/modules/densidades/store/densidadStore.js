@@ -13,8 +13,6 @@ export const useDensidadStore = defineStore('densidad', {
   actions: {
 
     async fetch(params) {
-      console.timeLog(5)
-      console.log("🚀 ~ file: densidadStore.js:16 ~ fetch ~ params:", params)
       try {
         const { page } = params
         const link = `/densidades?page=${page}`
@@ -34,7 +32,6 @@ export const useDensidadStore = defineStore('densidad', {
     },
 
     async insert(form) {
-      console.log("🚀 ~ file: densidadStore.js:37 ~ insert ~ form:", form)
       try {
         const { data, status } = await api_volumetricos.post('/densidades', form)
         const { densidad } = data.data
@@ -53,12 +50,9 @@ export const useDensidadStore = defineStore('densidad', {
     },
 
     async update(form) {
-      console.log("🚀 ~ file: densidadStore.js:56 ~ update ~ form:", form)
       try {
         const { data, status } = await api_volumetricos.put(`/densidades/${form.id}`, form)
         const densidadSt = this.densidades.find(d => d.id == form.id)
-        console.log("🚀 ~ file: densidadStore.js:60 ~ update ~ data:", data)
-        console.log("🚀 ~ file: densidadStore.js:60 ~ update ~ densidadSt:", densidadSt)
         const { balance_id, densidad } = data.data.densidad
         densidadSt.balance_id = balance_id
         densidadSt.densidad = densidad
@@ -66,7 +60,6 @@ export const useDensidadStore = defineStore('densidad', {
         const obj = {
           ok: true, data: data.data.densidad, message: data.message, status
         }
-        console.log("🚀 ~ file: densidadStore.js:69 ~ update ~ obj:", obj)
         return obj
       } catch (error) {
         if(error.response){

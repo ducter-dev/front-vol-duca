@@ -8,7 +8,6 @@ import useEventsBus from "@/layout/eventBus"
 import useBitacora from '../../bitacora/composables'
 import useAuth from '../../auth/composables/useAuth'
 import useToast from '../../dashboard/composables/useToast'
-import IconPlus from '@/assets/icons/plus-solid.svg'
 import FormDensidad from '../components/FormDensidad.vue'
 
 
@@ -29,13 +28,6 @@ async function onSubmit(form) {
   const { data, status, message } = await insertDensidad(form)
   console.log("🚀 ~ file: Create.vue:55 ~ onSubmit ~ data:", data)
   if (status == 200) {
-    emit("successRegistrationDensidad", true)
-    /* const objBitacora = {
-      user: currentUser.value.id,
-      actividad: `El usuario ${currentUser.value.username} registró al densidad ${data.folioDictamen}.`,
-      evento: 1,
-    }
-    insertBitacora(objBitacora) */
     addToast({
       message: {
         title: "Éxito!",
