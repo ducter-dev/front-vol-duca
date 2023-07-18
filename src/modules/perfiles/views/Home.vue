@@ -38,19 +38,12 @@
             />
           </svg>
           <router-link
-            :to="{ name: 'densidades.home' }"
+            :to="{ name: 'perfiles.home' }"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
-            >Densidades</router-link
+            >Perfiles</router-link
           >
         </div>
       </li>
     </ol>
   </LBreadcrumb>
-  <div class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
-    <h2
-      class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
-    >
-      Densidades
-    </h2>
-  </div>
 </template>

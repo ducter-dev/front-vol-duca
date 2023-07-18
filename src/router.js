@@ -7,6 +7,15 @@ import densidadesRouter from './modules/densidades/routes'
 import dictamenesRouter from './modules/dictamenes/routes'
 import erroresRouter from './modules/errores/routes'
 import empresaRouter from './modules/empresas/routes'
+import usuariosRouter from './modules/usuarios/routes'
+import perfilesRouter from './modules/perfiles/routes'
+import permisosRouter from './modules/permisos/routes'
+import clientesRouter from './modules/clientes/routes'
+import bitacoraRouter from './modules/bitacora/routes'
+import productosRouter from './modules/productos/routes'
+import compuestosRouter from './modules/compuestos/routes'
+import eventosRouter from './modules/eventos/routes'
+import revisionesRouter from './modules/revisiones/routes'
 
 const routes = [
   {
@@ -37,6 +46,46 @@ const routes = [
   {
     path: '/errores',
     ...erroresRouter
+  },
+  {
+    path: '/usuarios',
+    ...usuariosRouter
+  },
+  {
+    path: '/perfiles',
+    ...perfilesRouter
+  },
+  {
+    path: '/permisos',
+    ...permisosRouter
+  },
+  {
+    path: '/empresas',
+    ...empresaRouter
+  },
+  {
+    path: '/clientes',
+    ...clientesRouter
+  },
+  {
+    path: '/bitacora',
+    ...bitacoraRouter
+  },
+  {
+    path: '/productos',
+    ...productosRouter
+  },
+  {
+    path: '/compuestos',
+    ...compuestosRouter
+  },
+  {
+    path: '/eventos',
+    ...eventosRouter
+  },
+  {
+    path: '/revisiones',
+    ...revisionesRouter
   },
 ]
 
