@@ -1,29 +1,17 @@
 <template>
-  <div class="m-2 sm:mx-12 sm:my-2 w-full flex flex-col">
-    <div class="flex flex-row justify-start items-center mt-5 ml-5 sm:ml-0">
-      <div class="flex justify-center items-center mr-2">
-        <h2 class="flex justify-center items-center text-xl font-bold text-dark mr-2">Nueva Empresa</h2>
+  <div class="flex flex-col w-full m-2 sm:mx-12 sm:my-2">
+    <div class="flex flex-row items-center justify-start mt-5 ml-5 sm:ml-0">
+      <div class="flex items-center justify-center mr-2">
+        <h2 class="flex items-center justify-center mr-2 text-xl font-bold text-dark">Nueva Empresa</h2>
       </div>
         <button
           type="button"
-          class="
-            text-dark
-            border border-dark
-            hover:bg-dark hover:text-white
-            focus:ring-4 focus:ring-blue-300
-            font-medium
-            rounded-full
-            text-sm
-            p-2
-            text-center
-            inline-flex
-            items-center
-          " @click="goBack"
+          class="inline-flex items-center p-2 text-sm font-medium text-center border rounded-full  text-dark border-dark hover:bg-dark hover:text-white focus:ring-4 focus:ring-blue-300" @click="goBack"
         >
           <IconLeft class="w-4 h-4" fill="currentColor" />
         </button>
     </div>
-    <div class="flex justify-center items-center my-4 mb-16">
+    <div class="flex items-center justify-center my-4 mb-16">
       <FormEmpresa :empresaSelect="empresa" @submitForm="agregarEmpresa" />
     </div>
   </div>
@@ -31,7 +19,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import useEmpresa from '../../empresas/composables/empresa'
+import useEmpresa from '../composables/empresa'
 import IconLeft from '@/assets/icons/caretLeft.svg'
 import FormEmpresa from '../../../components/Forms/FormEmpresa.vue'
 import { useToast } from 'vue-toastification'

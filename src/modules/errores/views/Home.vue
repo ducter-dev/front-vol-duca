@@ -107,7 +107,7 @@ onMounted(() => {
         <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
           <div class="border border-solid border-slate-300">
             <div class="flex items-center justify-between">
-              <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de densidades
+              <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de errores
               </legend>
             </div>
             <LTable :loader="loading">

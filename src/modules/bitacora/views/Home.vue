@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import useToast from "../../dashboard/composables/useToast"
-import useBitacora from '../../bitacora/composables'
+import useBitacora from '../composables'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import useEventsBus from "../../../layout/eventBus"
@@ -13,8 +13,8 @@ import useEventsBus from "../../../layout/eventBus"
 */
 
 const { bus } = useEventsBus()
-const { fetchBitacora, getBitacora } = useBitacora()
-const records = computed(() => getBitacora())
+const { fetchBitacoras, getBitacoras } = useBitacora()
+const records = computed(() => getBitacoras())
 const date = ref(new Date())
 const dateToUse = computed(() => format(date.value, 'yyyy-MM-dd'))
 const { addToast } = useToast()
@@ -54,7 +54,7 @@ const fetchDataBitacora = async () => {
   console.log("🚀 ~ file: index.vue:53 ~ fetchDataBitacora ~ fetchDataBitacora:", fetchDataBitacora)
   try {
     console.log("🚀 ~ file: index.vue:56 ~ fetchDataBitacora ~ dateToUse:", dateToUse.value)
-    const res = await fetchBitacora(dateToUse.value)
+    const res = await fetchBitacoras(dateToUse.value)
     const { data, status } = res
 
     // Valida de acuerdo al estatus de la petición
@@ -111,13 +111,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <LBreadcrumb :back-route="{ name: 'Home' }">
+  <LBreadcrumb :back-route="{ name: 'dashboard.home' }">
     <svg class="w-5 h-5 shrink-0 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
       <path fill-rule="evenodd"
         d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
         clip-rule="evenodd" />
     </svg>
-    <router-link :to="{ name: 'Home' }"
+    <router-link :to="{ name: 'dashboard.home' }"
       class="text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-500">
       Inicio
     </router-link>

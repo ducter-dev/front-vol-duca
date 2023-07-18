@@ -1,20 +1,20 @@
 export default {
-  name: 'empresas',
+  name: 'perfiles',
   component: () => import('@/modules/dashboard/layouts/DashboardLayout.vue'),
   children: [
     {
       path: '',
-      name: 'empresas.home',
+      name: 'perfiles.home',
       component: () => import('../views/Home.vue')
     },
     {
       path: 'nuevo',
-      name: 'empresas.create',
+      name: 'perfiles.create',
       component: () => import('../views/Create.vue')
     },
     {
       path: 'editar',
-      name: 'empresas.edit',
+      name: 'perfiles.edit',
       component: () => import('../views/Edit.vue')
     },
   ]
