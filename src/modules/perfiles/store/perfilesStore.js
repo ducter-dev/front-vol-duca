@@ -9,12 +9,14 @@ export const usePerfilStore = defineStore('perfiles', {
   }),
   getters: {},
   actions: {
-    async fetch () {
+    async fetch (params) {
       try {
-        const { data, status } = await api_volumetricos.get('/roles')
+        const { page } = params
+        const link = `/roles?page=${page}`
+        const { data, status } = await api_volumetricos.get(link)
         this.perfiles = data.data
         const obj = {
-          ok: true, data: this.usuarios, message: data.message, status
+          ok: true, data: this.perfiles, message: data.message, status
         }
         return obj
       } catch (error) {
@@ -25,12 +27,14 @@ export const usePerfilStore = defineStore('perfiles', {
         }
       }
     },
+
     async insert (form) {
       try {
-        const { data, status } = await api_volumetricos.post('/roles')
-        this.perfiles = data.data
+        const { data, status } = await api_volumetricos.post('/roles', form)
+        const perfil = data.data
+        this.perfiles.push(perfil)
         const obj = {
-          ok: true, data: this.usuarios, message: data.message, status
+          ok: true, data: perfil, message: data.message, status
         }
         return obj
       } catch (error) {
@@ -41,12 +45,37 @@ export const usePerfilStore = defineStore('perfiles', {
         }
       }
     },
-    async update (id_perfil) {
+
+    async update (form) {
       try {
-        const { data, status } = await api_volumetricos.put(`/roles/${id_perfil}`)
-        this.perfiles = data.data
+        const { data, status } = await api_volumetricos.put(`/roles/${form.id}`)
+        const perfil = this.perfiles.find(p => p.id == form.id)
+        const { name, guard_name, permissions } = data.data.rol
+        perfil.name = name
+        perfil.guard_name = guard_name
+        perfil.permissions = permissions
+        this.perfilSelected = {}
+  
         const obj = {
-          ok: true, data: this.usuarios, message: data.message, status
+          ok: true, data: perfil, message: data.message, status
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
+    async delete(id) {
+      try {
+        const { data, status } = await api_volumetricos.delete(`/roles/${id}`)
+        this.perfiles = this.perfiles.filter(p => p.id != id)
+        const { rol } = data.data
+        const obj = {
+          ok: true, data: rol, message: data.message, status
         }
         return obj
       } catch (error) {

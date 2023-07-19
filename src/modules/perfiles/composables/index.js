@@ -4,13 +4,28 @@ const usePerfil = () => {
 
   const store = usePerfilStore()
 
-  const fetchPerfiles = async () => {
-    const resp = await store.fetch()
+  const fetchPerfiles = async (params) => {
+    const resp = await store.fetch(params)
     return resp
   }
 
   const getPerfiles = () => {
     return store.perfiles
+  }
+
+  const insertPerfil = async(form) => {
+    const resp = await store.insert(form)
+    return resp
+  }
+
+  const updatePerfil = async(form) => {
+    const resp = await store.update(form)
+    return resp
+  }
+
+  const deletePerfil = async(id) => {
+    const resp = await store.delete(id)
+    return resp
   }
 
   const setPerfilSelected = (perfil) => {
@@ -26,6 +41,9 @@ const usePerfil = () => {
     getPerfiles,
     setPerfilSelected,
     getPerfilesSelected,
+    insertPerfil,
+    updatePerfil,
+    deletePerfil,
   }
 }
 

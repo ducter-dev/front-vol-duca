@@ -9,12 +9,11 @@ import useToast from "../../dashboard/composables/useToast"
 import IconPlus from '@/assets/icons/plus-solid.svg'
 import Paginate from '@/layout/components/Paginate/Index.vue'
 import useUsuario from "../composables"
-import usePerfil from '@/modules/perfiles/composables';
+import usePerfil from '@/modules/perfiles/composables'
 
 /* Declaración de atributos asignables */
 const { bus } = useEventsBus()
-const { getUsuarios, fetchUsuarios, selectUsuario } = useUsuario()
-const usuariosList = computed(() => getUsuarios())
+const { fetchUsuarios, selectUsuario } = useUsuario()
 const { addToast } = useToast()
 const router = useRouter()
 const { fetchPerfiles } = usePerfil()
@@ -53,7 +52,7 @@ const setDataFromResult = (data) => {
 const fetchDataUsuarios = async () => {
   try {
     loading.value = true
-    const params = { page: pagination.current_page}
+    const params = { page: pagination.current_page }
     const res = await fetchUsuarios(params)
     const { data, status, message, paginacion } = res
 
@@ -64,7 +63,7 @@ const fetchDataUsuarios = async () => {
       links.value = paginacion.links
       meta.value = paginacion.meta
       pagination = paginacion.meta
-      
+
     } else {
       loading.value = false
       addToast({
@@ -88,12 +87,12 @@ const fetchDataUsuarios = async () => {
 }
 
 const goToInsert = () => {
-  router.push({ name: 'usuarios.create'})
+  router.push({ name: 'usuarios.create' })
 }
 
 const goToEdit = (item) => {
   selectUsuario(item)
-  router.push({ name: 'usuarios.edit'})
+  router.push({ name: 'usuarios.edit' })
 }
 
 const setPerfiles = (item) => {
@@ -120,20 +119,11 @@ onMounted(() => {
     <ol role="list" class="flex items-center space-x-1">
       <li>
         <div>
-          <router-link
-            :to="{ name: 'dashboard.home' }"
-            class="text-slate-400 hover:text-slate-500"
-          >
-            <svg
-              class="flex-shrink-0 w-5 h-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
+          <router-link :to="{ name: 'dashboard.home' }" class="text-slate-400 hover:text-slate-500">
+            <svg class="flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
               <path
-                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-              />
+                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
             </svg>
             <span class="sr-only">Inicio</span>
           </router-link>
@@ -141,32 +131,21 @@ onMounted(() => {
       </li>
       <li>
         <div class="flex items-center">
-          <svg
-            class="flex-shrink-0 w-5 h-5 text-slate-400"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
+          <svg class="flex-shrink-0 w-5 h-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+            fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd"
               d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"
-            />
+              clip-rule="evenodd" />
           </svg>
-          <router-link
-            :to="{ name: 'usuarios.home' }"
-            class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
-            >Usuarios</router-link
-          >
+          <router-link :to="{ name: 'usuarios.home' }"
+            class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700">Usuarios</router-link>
         </div>
       </li>
     </ol>
   </LBreadcrumb>
-  <div class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
-    <h2
-      class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
-    >
+  <div
+    class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
+    <h2 class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate">
       Usuarios
     </h2>
   </div>
@@ -181,13 +160,17 @@ onMounted(() => {
               <div>
                 <button class="p-2" @click="goToInsert()">
                   <span v-tippy="'Ingresar'">
-                    <IconPlus class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary" fill="currentColor" />
+                    <IconPlus
+                      class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary"
+                      fill="currentColor" />
                   </span>
                 </button>
                 <button class="p-2" @click="fetchDataUsuarios()">
-                    <span v-tippy="'Actualizar'">
-                      <RefreshIcon class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary" :class="loading ? 'animate-spin' : ''" fill="currentColor"/>
-                    </span>
+                  <span v-tippy="'Actualizar'">
+                    <RefreshIcon
+                      class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary"
+                      :class="loading ? 'animate-spin' : ''" fill="currentColor" />
+                  </span>
                 </button>
               </div>
             </div>
@@ -207,11 +190,19 @@ onMounted(() => {
                   <LBodyTh :value="item.id" center />
                   <LBodyTh :value="item.nombre" center />
                   <LBodyTd :value="item.usuario" center />
-                  <LBodyTd :value="setPerfiles(item)" center />
+                  <td class="px-4 py-2">
+                    <div class="flex flex-col space-y-2">
+                      <span
+                        class="bg-slate-100 text-slate-800 text-xs font-medium text-center px-1 py-0.5 rounded dark:bg-slate-700 dark:text-slate-300"
+                        v-for="(role, index) in item.roles" :key="`role_${index}`">{{ role }}
+                      </span>
+                    </div>
+                  </td>
                   <LBodyTd :value="item.correo" center />
                   <LBodyTd center>
                     <div class="inline-flex shadow-sm" role="group">
-                      <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
+                      <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'"
+                        @click="goToEdit(item)">
                         <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
                       </span>
                       <DeleteUser :model="item" :id="item.id" @successSubmit="fetchDataUsuarios()" />
@@ -228,9 +219,5 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <Paginate 
-    v-if="pagination.last_page > 1"
-    :pagination="pagination"
-    :offset="7"
-    @changePaginate="fetchDataUsuarios()" />
+  <Paginate v-if="pagination.last_page > 1" :pagination="pagination" :offset="7" @changePaginate="fetchDataUsuarios()" />
 </template>
