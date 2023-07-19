@@ -4,8 +4,6 @@ const useDensidad = () =>{
     const store = useDensidadStore()
 
     const fetchDensidades = async (params) => {
-        console.log(4)
-        console.log("🚀 ~ file: densidades.js:7 ~ fetchDensidades ~ params:", params)
         const resp = await store.fetch(params)
         return resp 
     }
