@@ -12,6 +12,7 @@ const userSelect = computed(() => getSelectedUsuario())
 const { emit } = useEventsBus()
 const disabled = ref(true)
 const perfiles = computed(() => getPerfiles())
+const isEditing = ref(false)
 
 const initialFormData = () => ({
   nombre: '',
@@ -25,13 +26,17 @@ const initialFormData = () => ({
 const usuarioForm = reactive(initialFormData())
 
 if (Object.keys(userSelect.value).length > 0) {
+  console.log("🚀 ~ file: FormUsers.vue:31 ~ userSelect.value.roles[0]:", userSelect.value.roles[0])
+  const rol = perfiles.value.find( p => p.name ===  userSelect.value.roles[0])
+  console.log("🚀 ~ file: FormUsers.vue:35 ~ rol ~ rol:", rol)
   console.log('Editar')
+  isEditing.value = true
   usuarioForm.id = userSelect.value.id
   usuarioForm.nombre = userSelect.value.nombre
   usuarioForm.usuario = userSelect.value.usuario
   usuarioForm.contrasena = userSelect.value.contrasena
   usuarioForm.correo = userSelect.value.correo
-  usuarioForm.rol = userSelect.value.roles[0]
+  usuarioForm.rol = rol.id
 }
 
 
@@ -87,19 +92,22 @@ onMounted(() => {
       <label
         class="peer-focus:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Correo</label>
     </div>
-    <div class="relative z-0 w-full mb-6 group">
-      <input type="password" name="usuario"
-        class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=" " required v-model="usuarioForm.contrasena" />
-      <label
-        class="peer-focus:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">contrasena</label>
-    </div>
-    <div class="relative z-0 w-full mb-6 group">
-      <input type="password" name="usuario"
-        class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=" " required v-model="usuarioForm.password_confirmated" />
-      <label
-        class="peer-focus:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirmar contrasena</label>
+    <div v-if="isEditing"></div>
+    <div v-else>
+      <div class="relative z-0 w-full mb-6 group">
+        <input type="password" name="contrasena"
+          class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" " required v-model="usuarioForm.contrasena" />
+        <label
+          class="peer-focus:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">contrasena</label>
+      </div>
+      <div class="relative z-0 w-full mb-6 group">
+        <input type="password" name="password_confirmated"
+          class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" " required v-model="usuarioForm.password_confirmated" />
+        <label
+          class="peer-focus:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirmar contrasena</label>
+      </div>
     </div>
     <div class="flex items-center md:justify-end">
       <label for="perfiles" class="block mb-2 text-base font-bold text-dark dark:text-gray-400">Selecciona un Perfil</label>

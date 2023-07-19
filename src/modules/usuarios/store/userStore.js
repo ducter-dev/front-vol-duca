@@ -51,19 +51,20 @@ export const useUsuarioStore = defineStore('usuario', {
       }
     },
 
-    async update(usuariox) {
+    async update(form) {
       try {
-        const { data } = await api_volumetricos.put(`/users/${usuariox.id}`, usuariox)
-        const user = this.usuarios.find(user => user.id == usuariox.id)
-        const { nombre, usuario, perfil_id, empresa_id, correo, empresa, perfil } = data.data
+        console.log("🚀 ~ file: userStore.js:55 ~ update ~ form:", form)
+        const { data, status } = await api_volumetricos.put(`/users/${form.id}`, form)
+        const user = this.usuarios.find(user => user.id == form.id)
+        const { nombre, usuario, correo, roles } = data.data.usuario
         user.nombre = nombre
         user.usuario = usuario
         user.correo = correo
-        user.perfil = perfil
+        user.roles = roles
         this.usuarioSelected = {}
   
         const obj = {
-          ok: true, data: data.data.usuario, message: data.message, status
+          ok: true, data: user, message: data.message, status
         }
         return obj
       } catch (error) {

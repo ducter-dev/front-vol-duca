@@ -9,6 +9,7 @@ import useToast from "../../dashboard/composables/useToast"
 import IconPlus from '@/assets/icons/plus-solid.svg'
 import Paginate from '@/layout/components/Paginate/Index.vue'
 import useUsuario from "../composables"
+import usePerfil from '@/modules/perfiles/composables';
 
 /* Declaración de atributos asignables */
 const { bus } = useEventsBus()
@@ -16,6 +17,7 @@ const { getUsuarios, fetchUsuarios, selectUsuario } = useUsuario()
 const usuariosList = computed(() => getUsuarios())
 const { addToast } = useToast()
 const router = useRouter()
+const { fetchPerfiles } = usePerfil()
 
 let usuarios = ref([])
 let loading = ref(false)
@@ -108,6 +110,7 @@ const setPerfiles = (item) => {
 
 onMounted(() => {
   fetchDataUsuarios()
+  fetchPerfiles()
 })
 
 </script>
