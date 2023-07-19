@@ -22,8 +22,8 @@ const useUsuario = () => {
     return resp
   }
 
-  const deleteUsuario = async(usuario) => {
-    const resp = await store.delete(usuario)
+  const deleteUsuario = async(id) => {
+    const resp = await store.delete(id)
     return resp
   }
 

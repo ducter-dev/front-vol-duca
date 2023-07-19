@@ -25,7 +25,6 @@ const closeModal = () => {
 const submit = async () => {
   try {
         loader.value = true
-        console.log("🚀 ~ file: Delete.vue:28 ~ submit ~ props.id:", props.id)
         const { data, status, message } = await deleteDensidad(props.id)
         if (status == 200) {
           addToast({
@@ -45,7 +44,7 @@ const submit = async () => {
               title: "¡Error!",
               message: message,
               type: "error",
-              component: "create - onSubmit()"
+              component: "delete - onSubmit()"
             },
           })
         }
