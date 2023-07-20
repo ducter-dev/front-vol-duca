@@ -51,9 +51,7 @@ const fetchDataPerfiles = async () => {
     loading.value = true
     const params = { page: pagination.current_page}
     const res = await fetchPerfiles(params)
-    console.log("🚀 ~ file: Home.vue:52 ~ fetchDataPerfiles ~ params:", params)
     const { data, status, message, paginacion } = res
-    console.log("🚀 ~ file: Home.vue:54 ~ fetchDataPerfiles ~ data:", data)
 
     // Valida de acuerdo al estatus de la petición
     // Si el código de estatus es diferente de 200 se marcara un error 
@@ -104,7 +102,6 @@ const goToEdit = (item) => {
 onMounted(() => {
   fetchDataPerfiles()
 })
-
 
 </script>
 
@@ -201,7 +198,7 @@ onMounted(() => {
                     <div class="flex flex-row flex-wrap">
                       <span
                         class="mx-2 my-1 bg-slate-100 text-slate-800 text-xs font-medium text-center px-1 py-0.5 rounded dark:bg-slate-700 dark:text-slate-300"
-                        v-for="p in item.permissions" :key="p.id">{{ p.nombre }}
+                        v-for="p in item.permissions" :key="p.id">{{ p.descripcion }}
                       </span>
                     </div>
                   </td>

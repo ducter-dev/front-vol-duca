@@ -8,7 +8,6 @@ import useEventsBus from "@/layout/eventBus"
 import useBitacora from '../../bitacora/composables'
 import useAuth from '../../auth/composables/useAuth'
 import useToast from '../../dashboard/composables/useToast'
-import IconPlus from '@/assets/icons/plus-solid.svg'
 import FormDensidad from '../components/FormDensidad.vue'
 import useBalance from '@/modules/balances/composables/balance';
 

@@ -21,13 +21,10 @@ const initialFormData = () => ({
 const perfilForm = reactive(initialFormData())
 
 if (Object.keys(perfilSelected.value).length > 0) {
-  const rol = perfiles.value.find(p => p.id === perfilSelected.value.roles[0])
-  isEditing.value = true
-
   perfilForm.id = perfilSelected.value.id
-  perfilForm.name = perfilSelected.value.nombre
+  perfilForm.name = perfilSelected.value.name
   perfilForm.guard_name = perfilSelected.value.guard_name
-  perfilForm.permissions = perfilSelected.value.permissions
+  perfilForm.permissions = perfilSelected.value.permissions_ids
 }
 
 const resetform = () => {

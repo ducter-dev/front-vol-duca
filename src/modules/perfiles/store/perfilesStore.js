@@ -48,7 +48,7 @@ export const usePerfilStore = defineStore('perfiles', {
 
     async update (form) {
       try {
-        const { data, status } = await api_volumetricos.put(`/roles/${form.id}`)
+        const { data, status } = await api_volumetricos.put(`/roles/${form.id}`, form)
         const perfil = this.perfiles.find(p => p.id == form.id)
         const { name, guard_name, permissions } = data.data.rol
         perfil.name = name
