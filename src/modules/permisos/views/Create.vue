@@ -2,8 +2,8 @@
 import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useEventsBus from "@/layout/eventBus"
-import usePermiso from '../composables'
 import useToast from '../../dashboard/composables/useToast'
+import usePermiso from '../composables'
 import FormPermiso from '../components/FormPermiso.vue'
 
 const router = useRouter()

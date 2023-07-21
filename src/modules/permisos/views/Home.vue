@@ -89,7 +89,7 @@ const goToInsert = () => {
 }
 
 const goToEdit = (item) => {
-  setPerfilSelected(item)
+  setPermisoSelected(item)
   router.push({ name: 'permisos.edit'})
 }
 
