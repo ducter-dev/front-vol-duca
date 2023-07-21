@@ -27,12 +27,12 @@ const useCliente = () => {
     return resp
   }
 
-  const setClienteSelected = (perfil) => {
-    store.perfilSelected = perfil
+  const setClienteSelected = (cliente) => {
+    store.clienteSelected = cliente
   }
 
-  const getClienteesSelected = () => {
-    return store.perfilSelected
+  const getClientesSelected = () => {
+    return store.clienteSelected
   }
 
   return {
@@ -42,7 +42,7 @@ const useCliente = () => {
     updateCliente,
     deleteCliente,
     setClienteSelected,
-    getClienteesSelected,
+    getClientesSelected,
   }
 }
 

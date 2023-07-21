@@ -2,22 +2,20 @@
 import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useEventsBus from "@/layout/eventBus"
-import usePerfil from '../composables'
 import useToast from '../../dashboard/composables/useToast'
+import usePerfil from '../composables'
 import FormPerfil from '../components/FormPerfiles.vue'
 
 const router = useRouter()
-const { insertPerfil } = usePerfil()
 const { addToast } = useToast()
 const { emit, bus } = useEventsBus()
 const loader = ref(false)
+const { insertPerfil } = usePerfil()
 
 /* Declaración de métodos */
 async function onSubmit(form) {
-  console.log("🚀 ~ file: Create.vue:17 ~ onSubmit ~ form:", form)
   loader.value = true
   const { data, status, message } = await insertPerfil(form)
-  console.log("🚀 ~ file: Create.vue:20 ~ onSubmit ~ data:", data)
   if (status == 200) {
     addToast({
       message: {
@@ -43,7 +41,6 @@ async function onSubmit(form) {
 }
 
 watch(() => bus.value.get('submitForm'), (value) => {
-  console.log("🚀 ~ file: Create.vue:47 ~ watch ~ value:", value[0])
   onSubmit(value[0])
 })
 </script>
