@@ -12,16 +12,22 @@ export const useBitacoraStore = defineStore('bitacoras', {
     get () {
       return this.bitacoras
     },
-    async fetch () {
+    async fetch (params) {
       try {
-        const { data } = await api_volumetricos.get('/bitacora')
+        const { page } = params
+        const link = `/bitacora?page=${page}`
+        const { data, status } = await api_volumetricos.get(link)
         this.bitacoras = data.data
         const obj = {
-          ok: true, data: this.bitacoras
+          ok: true, data: this.bitacoras, message: data.message, status, paginacion: data
         }
         return obj
       } catch (error) {
-        return { ok: false, data: error.message}
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
     
