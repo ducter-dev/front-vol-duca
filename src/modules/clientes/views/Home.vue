@@ -174,7 +174,7 @@ onMounted(() => {
                     <IconPlus class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary" fill="currentColor" />
                   </span>
                 </button>
-                <button class="p-2" @click="fetchDataPerfiles()">
+                <button class="p-2" @click="fetchDataClientes()">
                     <span v-tippy="'Actualizar'">
                       <RefreshIcon class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary" :class="loading ? 'animate-spin' : ''" fill="currentColor"/>
                     </span>
@@ -200,7 +200,7 @@ onMounted(() => {
                       <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
                         <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
                       </span>
-                      <DeletePerfil :model="item" :id="item.id" @successSubmit="fetchDataPerfiles()" />
+                      <DeleteCliente :model="item" :id="item.id" @successSubmit="fetchDataClientes()" />
                     </div>
                   </LBodyTd>
                 </tr>
@@ -218,5 +218,5 @@ onMounted(() => {
     v-if="pagination.last_page > 1"
     :pagination="pagination"
     :offset="7"
-    @changePaginate="fetchDataPerfiles()" />
+    @changePaginate="fetchDataClientes()" />
 </template>
