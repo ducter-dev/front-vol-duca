@@ -8,6 +8,7 @@ import useEventsBus from "../../../layout/eventBus"
 import useToast from "../../dashboard/composables/useToast"
 import IconPlus from '@/assets/icons/plus-solid.svg'
 import Paginate from '@/layout/components/Paginate/Index.vue'
+import DeletePerfil from './Delete.vue'
 
 /* Declaración de atributos asignables */
 const { bus } = useEventsBus()
@@ -207,7 +208,7 @@ onMounted(() => {
                       <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
                         <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
                       </span>
-                      <DeleteUser :model="item" :id="item.id" @successSubmit="fetchDataPerfiles()" />
+                      <DeletePerfil :model="item" :id="item.id" @successSubmit="fetchDataPerfiles()" />
                     </div>
                   </LBodyTd>
                 </tr>

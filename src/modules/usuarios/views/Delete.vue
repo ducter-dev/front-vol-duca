@@ -47,6 +47,7 @@ const submit = async () => {
               component: "delete - onSubmit()"
             },
           })
+          isOpen.value = false
         }
       } catch (error) {
         loader.value = false
