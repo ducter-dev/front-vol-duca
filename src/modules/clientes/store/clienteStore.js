@@ -57,7 +57,7 @@ export const useClienteStore = defineStore('clientes', {
         this.clienteSelected = {}
   
         const obj = {
-          ok: true, data: perfil, message: data.message, status
+          ok: true, data: cliente, message: data.message, status
         }
         return obj
       } catch (error) {
