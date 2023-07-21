@@ -89,7 +89,7 @@ const goToInsert = () => {
 }
 
 const goToEdit = (item) => {
-  setClienteSelected(item)
+  setEventoSelected(item)
   router.push({ name: 'eventos.edit'})
 }
 
