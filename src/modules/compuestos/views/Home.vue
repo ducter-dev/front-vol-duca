@@ -89,7 +89,7 @@ const goToInsert = () => {
 }
 
 const goToEdit = (item) => {
-  setClienteSelected(item)
+  setCompuestoSelected(item)
   router.push({ name: 'compuestos.edit'})
 }
 
