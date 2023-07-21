@@ -32,7 +32,7 @@ async function onSubmit(form) {
     addToast({
       message: {
         title: "Éxito!",
-        message: `Se actualizó el perfil ${data.nombee} de la lista.`,
+        message: `Se actualizó el perfil ${data.nombre} de la lista.`,
         type: "success"
       },
     })
@@ -109,7 +109,7 @@ watch(() => bus.value.get('submitForm'), (value) => {
           <router-link
             :to="{ name: 'perfiles.home' }"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
-            >Dictámenes</router-link
+            >Perfiles</router-link
           >
         </div>
       </li>

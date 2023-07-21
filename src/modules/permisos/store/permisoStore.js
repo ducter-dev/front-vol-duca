@@ -66,7 +66,7 @@ export const usePermisoStore = defineStore('permisos', {
 
     async update (form) {
       try {
-        const { data, status } = await api_volumetricos.put(`/permisos/${form.id}`)
+        const { data, status } = await api_volumetricos.put(`/permisos/${form.id}`, form)
         const permiso = this.permisos.find(p => p.id == form.id)
         const { nombre, descripcion, guard_name } = data.data
         permiso.name = nombre
@@ -91,9 +91,9 @@ export const usePermisoStore = defineStore('permisos', {
       try {
         const { data, status } = await api_volumetricos.delete(`/permisos/${id}`)
         this.permisos = this.permisos.filter(p => p.id != id)
-        const { rol } = data.data
+        const { permiso } = data.data
         const obj = {
-          ok: true, data: rol, message: data.message, status
+          ok: true, data: permiso, message: data.message, status
         }
         return obj
       } catch (error) {
