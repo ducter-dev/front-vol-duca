@@ -3,11 +3,11 @@ import { ref, reactive, onMounted, computed, watch } from "vue"
 import { useRouter } from 'vue-router'
 import EditIcon from "@/assets/icons/pencil.svg"
 import RefreshIcon from "@/assets/icons/refresh.svg"
-import usePerfil from '@/modules/perfiles/composables'
 import useEventsBus from "../../../layout/eventBus"
 import useToast from "../../dashboard/composables/useToast"
 import IconPlus from '@/assets/icons/plus-solid.svg'
 import Paginate from '@/layout/components/Paginate/Index.vue'
+import usePerfil from '@/modules/perfiles/composables'
 import DeletePerfil from './Delete.vue'
 
 /* Declaración de atributos asignables */
