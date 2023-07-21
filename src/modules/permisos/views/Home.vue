@@ -201,7 +201,7 @@ onMounted(() => {
                       <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
                         <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
                       </span>
-                      <DeletePerfil :model="item" :id="item.id" @successSubmit="fetchDataPermisos()" />
+                      <DeletePermiso :model="item" :id="item.id" @successSubmit="fetchDataPermisos()" />
                     </div>
                   </LBodyTd>
                 </tr>

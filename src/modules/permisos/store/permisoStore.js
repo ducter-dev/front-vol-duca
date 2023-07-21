@@ -91,9 +91,9 @@ export const usePermisoStore = defineStore('permisos', {
       try {
         const { data, status } = await api_volumetricos.delete(`/permisos/${id}`)
         this.permisos = this.permisos.filter(p => p.id != id)
-        const { rol } = data.data
+        const { permiso } = data.data
         const obj = {
-          ok: true, data: rol, message: data.message, status
+          ok: true, data: permiso, message: data.message, status
         }
         return obj
       } catch (error) {
