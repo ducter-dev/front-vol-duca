@@ -1,11 +1,12 @@
 <script setup>
 import Modal from '@/layout/components/Modal/Index.vue'
 import { ref } from 'vue'
-import useUsuario from '../composables'
+import usePerfil from '../composables'
+
 import useToast from '../../dashboard/composables/useToast'
 import IconDelete from '@/assets/icons/trash-can-solid.svg'
 
-const { deleteUsuario } = useUsuario()
+const { deletePerfil } = usePerfil()
 const { addToast } = useToast()
 
 let loader = ref(false)
@@ -25,12 +26,12 @@ const closeModal = () => {
 const submit = async () => {
   try {
         loader.value = true
-        const { data, status, message } = await deleteUsuario(props.id)
+        const { data, status, message } = await deletePerfil(props.id)
         if (status == 200) {
           addToast({
             message: {
               title: "Éxito!",
-              message: `Se eliminó el usuario ${data.usuario} de nuestros registros.`,
+              message: `Se eliminó el perfil ${data.name} del listado.`,
               type: "success"
             },
           })
@@ -64,10 +65,10 @@ const submit = async () => {
         <IconDelete class="w-4 h-4" />
       </span>
     </template>
-    <template #title>Eliminar Usuario</template>
+    <template #title>Eliminar Perfil</template>
     <template #content>
       <p class="text-sm text-gray-500">
-        ¿Está seguro que desea eliminar el usuario: <strong>{{ model.usuario }}</strong>?
+        ¿Está seguro que desea eliminar el perfil: <strong>{{ model.name }}</strong>?
       </p>
     </template>
     <template #actions>
