@@ -84,13 +84,18 @@ const fetchDataEmpresas = async () => {
   }
 }
 
-const goToInsert = () => {
+/* const goToInsert = () => {
   router.push({ name: 'empresas.create'})
-}
+} */
 
 const goToEdit = (item) => {
   setEmpresaSelected(item)
   router.push({ name: 'empresas.edit'})
+}
+
+const goToView = (item) => {
+  setEmpresaSelected(item)
+  router.push({ name: 'empresas.show'})
 }
 
 /**
@@ -147,7 +152,7 @@ onMounted(() => {
           <router-link
             :to="{ name: 'empresas.home' }"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
-            >Empesas</router-link
+            >Empresas</router-link
           >
         </div>
       </li>
@@ -157,7 +162,7 @@ onMounted(() => {
     <h2
       class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
     >
-      Empesas
+      Empresas
     </h2>
   </div>
   <div class="mt-5 space-y-5">
@@ -188,14 +193,14 @@ onMounted(() => {
                   <LBodyTh :value="item.rfc_contribuyente" center />
                   <LBodyTh :value="item.proveedor" center />
                   <LBodyTh :value="item.num_permiso" center />
-                  <LBodyTh :value="item.producto_omision.descripcion" center />
+                  <LBodyTh :value="item.producto.descripcion" center />
 
                   <LBodyTd center>
                     <div class="inline-flex shadow-sm" role="group">
                       <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
                         <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
                       </span>
-                      <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
+                      <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Ver'" @click="goToView(item)">
                         <IconEyes class="w-4 h-4 hover:text-primary" />
                       </span>
                     </div>

@@ -1,99 +1,149 @@
-<template>
-  <div class="flex flex-col w-full m-2 sm:mx-12 sm:my-2">
-    <div class="flex flex-row items-center justify-start mt-5 ml-5 md:ml-0">
-      <div class="flex items-center justify-center mr-2">
-        <h2 class="flex items-center justify-center mr-2 text-xl font-bold text-dark">Editar Empresa</h2>
-      </div>
-        <button
-          type="button"
-          class="inline-flex items-center p-2 text-sm font-medium text-center border rounded-full  text-dark border-dark hover:bg-dark hover:text-white focus:ring-4 focus:ring-blue-300" @click="goBack"
-        >
-          <IconLeft class="w-4 h-4" fill="currentColor" />
-        </button>
-    </div>
-    <div class="flex items-center justify-center mb-16 my-7 md:my-4">
-      <FormEmpresa :empresaSelect="empresa" @submitForm="editarEmpresa"/>
-    </div>
-  </div>
-</template>
-
-<script>
+<script setup>
+import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import useEventsBus from "@/layout/eventBus"
+import useToast from '../../dashboard/composables/useToast'
+import IconPlus from '@/assets/icons/plus-solid.svg'
 import useEmpresa from '../composables/empresa'
-import IconLeft from '@/assets/icons/caretLeft.svg'
-import FormEmpresa from '../../../components/Forms/FormEmpresa.vue'
-import { useToast } from 'vue-toastification'
+import FormEmpresas from '../components/FormEmpresas.vue'
 
-export default {
-  components: { IconLeft, FormEmpresa },
-  setup() {
-    const router = useRouter()
-    const { updateEmpresa } = useEmpresa()
-    const toast = useToast()
+/* Declaración de atributos asignables */
+const router = useRouter()
+const { addToast } = useToast()
+const { emit, bus } = useEventsBus()
+const { updateEmpresa } = useEmpresa()
 
-    const goBack = () => {
-      router.go(-1)
-    }
+const loader = ref(false)
 
-    const editarEmpresa = async(empresa) => {
-      try {
-        const {ok, data, detail } = await updateEmpresa(empresa)
-        if (ok) {
-          toast.success(`Empresa actualizada correctamente.`, {
-            position: "bottom-right",
-            timeout: 2000,
-            closeOnClick: true,
-            pauseOnFocusLoss: true,
-            pauseOnHover: true,
-            draggable: true,
-            draggablePercent: 0.6,
-            showCloseButtonOnHover: false,
-            hideProgressBar: true,
-            closeButton: "button",
-            icon: true,
-            rtl: false
-          })
-          router.push('/configuracion/empresas')
-        } else {
-          detail.errors.forEach(error => {
-            toast.error(error, {
-              position: "bottom-right",
-              timeout: 2000,
-              closeOnClick: true,
-              pauseOnFocusLoss: true,
-              pauseOnHover: true,
-              draggable: true,
-              draggablePercent: 0.6,
-              showCloseButtonOnHover: false,
-              hideProgressBar: true,
-              closeButton: "button",
-              icon: true,
-              rtl: false
-            })
-          })
-        }
-      } catch (error) {
-        toast.error(error.message, {
-          position: "bottom-right",
-          timeout: 2000,
-          closeOnClick: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-          draggable: true,
-          draggablePercent: 0.6,
-          showCloseButtonOnHover: false,
-          hideProgressBar: true,
-          closeButton: "button",
-          icon: true,
-          rtl: false
-        })
-      }  
+/* Declaración de métodos */
+async function onSubmit(form) {
+  const res = await updateEmpresa(form)
+  const { data, status, message } = res
+  if (status == 200) {
+    loader.value = false
+    
+    /* const objBitacora = {
+      user: currentUser.value.id,
+      actividad: `El usuario ${currentUser.value.username} registró al densidad ${data.foliodensidad}.`,
+      evento: 1,
     }
-    return {
-      editarEmpresa,
-      IconLeft,
-      goBack,
-    }
+    insertBitacora(objBitacora) */
+    addToast({
+      message: {
+        title: "Éxito!",
+        message: `Se actualizó la empresa ${data.descripcion} de la lista.`,
+        type: "success"
+      },
+    })
+    router.push({ name: 'empresas.home' })
+  } else {
+    loader.value = false
+    addToast({
+      message: {
+        title: "¡Error!",
+        message: message,
+        type: "error",
+        component: "edit - onSubmit()"
+      },
+    })
   }
 }
+
+watch(() => bus.value.get('ErrorData'), (message) => {
+  addToast({
+      message: {
+        title: "¡Error!",
+        message: message,
+        type: "error",
+        component: "create - ErrorData()"
+      },
+    })
+})
+
+watch(() => bus.value.get('submitForm'), (value) => {
+  onSubmit(value[0])
+})
 </script>
+
+<template>
+  <LBreadcrumb :back-route="{ name: 'dashboard.home' }">
+    <ol role="list" class="flex items-center space-x-1">
+      <li>
+        <div>
+          <router-link
+            :to="{ name: 'dashboard.home' }"
+            class="text-slate-400 hover:text-slate-500"
+          >
+            <svg
+              class="flex-shrink-0 w-5 h-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+              />
+            </svg>
+            <span class="sr-only">Inicio</span>
+          </router-link>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center">
+          <svg
+            class="flex-shrink-0 w-5 h-5 text-slate-400"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <router-link
+            :to="{ name: 'empresas.home' }"
+            class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
+            >Empresas</router-link
+          >
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center">
+          <svg
+            class="flex-shrink-0 w-5 h-5 text-slate-400"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <a
+            href="#"
+            class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
+            aria-current="page"
+            >Editar empresa</a
+          >
+        </div>
+      </li>
+    </ol>
+  </LBreadcrumb>
+  <div class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
+    <h2
+      class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
+    >
+      Editar empresa
+    </h2>
+  </div>
+  <div class="flex items-center justify-center my-4 ">
+    <FormEmpresas />
+  </div>
+</template>
