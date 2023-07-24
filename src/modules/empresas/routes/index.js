@@ -8,9 +8,9 @@ export default {
       component: () => import('../views/Home.vue')
     },
     {
-      path: 'nuevo',
-      name: 'empresas.create',
-      component: () => import('../views/Create.vue')
+      path: 'show',
+      name: 'empresas.show',
+      component: () => import('../views/Show.vue')
     },
     {
       path: 'editar',

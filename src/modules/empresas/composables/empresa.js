@@ -3,8 +3,8 @@ import { useEmpresaStore } from '../store/empresaStore'
 const useEmpresa = () => {
   const store = useEmpresaStore()
   
-  const fetchEmpresas = async() => {
-    const resp = await store.get()
+  const fetchEmpresas = async(params) => {
+    const resp = await store.fetch(params)
     return resp
   }
 
@@ -40,6 +40,14 @@ const useEmpresa = () => {
     return store.currentEmpresa
   }
 
+  const setEmpresaSelected = (empresa) => {
+    store.empresaSelected = empresa
+  }
+
+  const getEmpresasSelected = () => {
+    return store.empresaSelected
+  }
+
   return {
     fetchEmpresas,
     showEmpresa,
@@ -49,6 +57,8 @@ const useEmpresa = () => {
     addCurrentEmpresa,
     getCurrentEmpresa,
     getEmpresas,
+    setEmpresaSelected,
+    getEmpresasSelected,
   }
 }
 
