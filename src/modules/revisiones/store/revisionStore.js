@@ -50,18 +50,18 @@ export const useRevisionStore = defineStore('revision', {
       try {
         const { data, status } = await api_volumetricos.put(`/revisiones/${form.id}`, form)
         const revisionSt = this.revisiones.find(r => r.id == form.id)
+        console.log("🚀 ~ file: revisionStore.js:54 ~ update ~ data.data.revision:", data.data.revision)
         const { descripcion, inicio, periodo, proxima, estado } = data.data.revision
-        revisionSt.id = id
         revisionSt.descripcion = descripcion
         revisionSt.inicio = inicio
         revisionSt.periodo = periodo
         revisionSt.proxima = proxima
         revisionSt.estado = estado
-        
         this.revisionSelected = {}
         const obj = {
           ok: true, data: data.data.revision, message: data.message, status
         }
+        console.log("🚀 ~ file: revisionStore.js:64 ~ update ~ obj:", obj)
         return obj
       } catch (error) {
         if(error.response){
