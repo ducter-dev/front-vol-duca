@@ -1,3 +1,139 @@
+<script setup>
+import { ref, reactive, onMounted, computed, watch } from "vue"
+import { useRouter } from 'vue-router'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+  ListboxLabel,
+} from '@headlessui/vue'
+
+import EditIcon from "@/assets/icons/pencil.svg"
+import RefreshIcon from "@/assets/icons/refresh.svg"
+import Delete from './Delete.vue'
+import useEventsBus from "../../../layout/eventBus"
+import useRevision from "../composables"
+import useToast from "../../dashboard/composables/useToast"
+import IconPlus from '@/assets/icons/plus-solid.svg'
+import Paginate from '@/layout/components/Paginate/Index.vue'
+/* import useBalance from '@/modules/balances/composables/balance' */
+
+/* Declaración de atributos asignables */
+
+const { bus } = useEventsBus()
+const { fetchRevisiones, selectRevision  } = useRevision()
+const { addToast } = useToast()
+const date = ref(new Date())
+const router = useRouter()
+
+let revisiones = ref([])
+let loading = ref(false)
+
+const links = ref([])
+const meta = ref([])
+let pagination = reactive({
+  current_page: 1
+})
+
+/* Declaración de métodos */
+const setDataFromResult = (data) => {
+  if (data.length == 0) {
+    addToast({
+      message: {
+        title: "Error!",
+        message: "No existen registros aún.",
+        type: "error"
+      },
+    })
+  }
+  revisiones.value = data
+  loading.value = false
+}
+
+/**
+ *  Función que consulta `fetchDataRevisiones`  para obtener datos desde la API la información.
+ *  Invoca a la función @function setDataFromResult para almacenar el resultado.
+ *  En caso de error en la petición @throws crea una instancia con el metodo @method addToast 
+ *  en la cual guarda un mensaje para visualizar en la interfaz.
+ */
+
+const fetchDataRevisiones = async () => {
+  try {
+    console.log(3)
+    loading.value = true
+    const params = { page: pagination.current_page}
+    const res = await fetchRevisiones(params)
+    const { data, status, message, paginacion } = res
+    /* console.log("🚀 ~ file: Home.vue:71 ~ fetchDataRevisiones ~ paginacion:", paginacion) */
+
+    // Valida de acuerdo al estatus de la petición
+    // Si el código de estatus es diferente de 200 se marcara un error 
+    if (status == 200) {
+      setDataFromResult(data)
+      links.value = paginacion.links
+      meta.value = paginacion.meta
+      pagination = paginacion.meta
+      
+    } else {
+      loading.value = false
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: message,
+          type: "error"
+        },
+      })
+    }
+  } catch (error) {
+    // En caso de tener error establece un mensaje de error
+    addToast({
+      message: {
+        title: "¡Error!",
+        message: `Error: ${error}`,
+        type: "error"
+      },
+    })
+  }
+}
+
+const goToInsert = () => {
+  router.push({ name: 'revisiones.create'})
+}
+
+const goToEdit = (revision) => {
+  selectRevision(revision)
+  router.push({ name: 'revisiones.edit'})
+}
+
+const formatPicker = () => {
+  return format(date.value, 'dd-MM-yyyy')
+}
+
+/* watch(() => bus.value.get('successRegistrationDensidad'), (val) => {
+  fetchDataRevisiones()
+}) */
+
+/**
+ *  Al montar el componente evalua la disponibilidad y existencia de la información
+ *  previamente almacenada en el store, en caso de existir @var tanksList sera asignado,
+ *  en caso contrario se invoca a la funcion @function fetchDataRevisiones 
+ *  para la obtencion de nueva información.
+ */
+
+onMounted(() => {
+  fetchDataRevisiones()
+})
+
+</script>
+
 <template>
   <LBreadcrumb :back-route="{ name: 'dashboard.home' }">
     <ol role="list" class="flex items-center space-x-1">
@@ -46,4 +182,76 @@
       </li>
     </ol>
   </LBreadcrumb>
+  <div class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
+    <h2
+      class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
+    >
+      Revisiones
+    </h2>
+  </div>
+  <div class="mt-5 space-y-5">
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12">
+        <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <div class="border border-solid border-slate-300">
+            <div class="flex items-center justify-between">
+              <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de revisiones
+              </legend>
+              <div>
+                <!-- <button class="p-2" @click="goToInsert()">
+                  <span v-tippy="'Ingresar'">
+                    <IconPlus class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary" fill="currentColor" />
+                  </span>
+                </button> -->
+                <!-- <button class="p-2" @click="fetchDataRevisiones()">
+                    <span v-tippy="'Actualizar'">
+                      <RefreshIcon class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary" :class="loading ? 'animate-spin' : ''" fill="currentColor"/>
+                    </span>
+                </button> -->
+              </div>
+            </div>
+            <LTable :loader="loading">
+              <template #head>
+                <tr>
+                  <LHeaderTh value="Consecutivo" center />
+                  <LHeaderTh value="Descripción" center />
+                  <LHeaderTh value="Inicio" center />
+                  <LHeaderTh value="Periodo" center />
+                  <LHeaderTh value="Próxima" center />
+                  <LHeaderTh value="Estado" center />
+                  <LHeaderTh value="Acciones" center />
+                </tr>
+              </template>
+              <template #body>
+                <tr v-for="(item) in revisiones" v-if="revisiones.length > 0" :key="item.id">
+                  <LBodyTh :value="item.id" center />
+                  <LBodyTd :value="item.descripcion" center />
+                  <LBodyTd :value="item.inicio" center />
+                  <LBodyTd :value="item.periodo" center />
+                  <LBodyTd :value="item.proxima" center />
+                  <LBodyTd :value="item.estado" center />
+                  <LBodyTd center>
+                    <div class="inline-flex shadow-sm" role="group">
+                      <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
+                        <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
+                      </span>
+                      <DeleteDensidad :model="item" :id="item.id" @successSubmit="fetchDataRevisiones()" />
+                    </div>
+                  </LBodyTd>
+                </tr>
+                <tr v-else>
+                  <LBodyTh value="Sin información" colspan="7" center />
+                </tr>
+              </template>
+            </LTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Paginate 
+    v-if="pagination.last_page > 1"
+    :pagination="pagination"
+    :offset="7"
+    @changePaginate="fetchDataRevisiones()" />
 </template>
