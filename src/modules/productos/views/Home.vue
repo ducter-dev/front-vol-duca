@@ -1,3 +1,117 @@
+<script setup>
+import { ref, reactive, onMounted, computed, watch } from "vue"
+import { useRouter } from 'vue-router'
+import EditIcon from "@/assets/icons/pencil.svg"
+import RefreshIcon from "@/assets/icons/refresh.svg"
+import useEventsBus from "../../../layout/eventBus"
+import useToast from "../../dashboard/composables/useToast"
+import IconPlus from '@/assets/icons/plus-solid.svg'
+import IconEyes from '@/assets/icons/eyes.svg'
+import Paginate from '@/layout/components/Paginate/Index.vue'
+import useProducto from "../composables/productos"
+import Delete from "./Delete.vue"
+
+
+/* Declaración de atributos asignables */
+const { bus } = useEventsBus()
+const { fetchProductos, selectProducto } = useProducto()
+const { addToast } = useToast()
+const router = useRouter()
+
+let productos = ref([])
+let loading = ref(false)
+
+const links = ref([])
+const meta = ref([])
+let pagination = reactive({
+  current_page: 1
+})
+
+/* Declaración de métodos */
+const setDataFromResult = (data) => {
+  if (data.length == 0) {
+    addToast({
+      message: {
+        title: "Error!",
+        message: "No existen registros en nuestros servidores.",
+        type: "error"
+      },
+    })
+  }
+  productos.value = data
+  loading.value = false
+}
+
+/**
+ *  Función que consulta `fetchDataProductos`  para obtener datos desde la API la información.
+ *  Invoca a la función @function setDataFromResult para almacenar el resultado.
+ *  En caso de error en la petición @throws crea una instancia con el metodo @method addToast 
+ *  en la cual guarda un mensaje para visualizar en la interfaz.
+ */
+
+const fetchDataProductos = async () => {
+  try {
+    loading.value = true
+    const params = { page: pagination.current_page}
+    const res = await fetchProductos(params)
+    const { data, status, message, paginacion } = res
+
+    // Valida de acuerdo al estatus de la petición
+    // Si el código de estatus es diferente de 200 se marcara un error 
+    if (status == 200) {
+      setDataFromResult(data)
+      links.value = paginacion.links
+      meta.value = paginacion.meta
+      pagination = paginacion.meta
+      
+    } else {
+      loading.value = false
+      addToast({
+        message: {
+          title: "¡Error!",
+          message: message,
+          type: "error"
+        },
+      })
+    }
+  } catch (error) {
+    // En caso de tener error establece un mensaje de error
+    addToast({
+      message: {
+        title: "¡Error!",
+        message: `Error: ${error}`,
+        type: "error"
+      },
+    })
+  }
+}
+
+const goToInsert = () => {
+  router.push({ name: 'productos.create'})
+}
+
+const goToEdit = (item) => {
+  selectProducto(item)
+  router.push({ name: 'productos.edit'})
+}
+
+const goToView = (item) => {
+  setEmpresaSelected(item)
+  router.push({ name: 'productos.show'})
+}
+
+/**
+ *  Al montar el componente evalua la disponibilidad y existencia de la información
+ *  previamente almacenada en el store, en caso de existir @var userList sera asignado,
+ *  en caso contrario se invoca a la funcion @function fetchDataProductos 
+ *  para la obtencion de nueva información.
+ */
+
+onMounted(() => {
+  fetchDataProductos()
+})
+</script>
+
 <template>
   <LBreadcrumb :back-route="{ name: 'dashboard.home' }">
     <ol role="list" class="flex items-center space-x-1">
@@ -46,4 +160,65 @@
       </li>
     </ol>
   </LBreadcrumb>
+  <div class="py-3 space-y-3 border-b border-slate-200 dark:border-slate-700 sm:flex sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
+    <h2
+      class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
+    >
+      Productos
+    </h2>
+  </div>
+  <div class="mt-5 space-y-5">
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12">
+        <div class="p-1 bg-white border shadow border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <div class="border border-solid border-slate-300">
+            <div class="flex items-center justify-between">
+              <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de productos
+              </legend>
+            </div>
+            <LTable :loader="loading">
+              <template #head>
+                <tr>
+                  <LHeaderTh value="Consecutivo" center />
+                  <LHeaderTh value="Descripción" center />
+                  <LHeaderTh value="Compuestos" center />
+                  <LHeaderTh value="Acciones" center />
+                </tr>
+              </template>
+              <template #body>
+                <tr v-for="item in productos" v-if="productos.length > 0" :key="item.id">
+                  <LBodyTh :value="item.id" center />
+                  <LBodyTh :value="item.descripcion" center />
+                  <td class="px-4 py-2">
+                    <div class="flex flex-row items-center justify-center">
+                      <span
+                        class="px-1 py-1 mx-2 text-xs font-medium text-center rounded bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300"
+                        v-for="c in item.compuestos" :key="`role_${c.id}`">{{ c.descripcion }} - {{ c.porcentajes.porcentaje }}
+                      </span>
+                    </div>
+                  </td>
+                  <LBodyTd center>
+                    <div class="inline-flex shadow-sm" role="group">
+                      <span class="mr-2 transform cursor-pointer hover:scale-110" v-tippy="'Editar'" @click="goToEdit(item)">
+                        <EditIcon class="w-4 h-4 hover:fill-current hover:text-primary" />
+                      </span>
+                      <Delete :model="item" :id="item.id" @successSubmit="fetchDataProductos()" />
+                    </div>
+                  </LBodyTd>
+                </tr>
+                <tr v-else>
+                  <LBodyTh value="Sin información" colspan="7" center />
+                </tr>
+              </template>
+            </LTable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Paginate 
+    v-if="pagination.last_page > 1"
+    :pagination="pagination"
+    :offset="7"
+    @changePaginate="fetchDataProductos()" />
 </template>
