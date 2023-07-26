@@ -175,6 +175,22 @@ onMounted(() => {
             <div class="flex items-center justify-between">
               <legend class="p-2 text-base font-medium text-slate-900 dark:text-white">Lista de productos
               </legend>
+              <div>
+                <button class="p-2" @click="goToInsert()">
+                  <span v-tippy="'Ingresar'">
+                    <IconPlus
+                      class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary"
+                      fill="currentColor" />
+                  </span>
+                </button>
+                <button class="p-2" @click="fetchDataProductos()">
+                  <span v-tippy="'Actualizar'">
+                    <RefreshIcon
+                      class="w-4 h-4 transform text-slate-600 hover:scale-110 dark:text-slate-300 hover:fill-current hover:text-primary"
+                      :class="loading ? 'animate-spin' : ''" fill="currentColor" />
+                  </span>
+                </button>
+              </div>
             </div>
             <LTable :loader="loading">
               <template #head>
@@ -193,7 +209,7 @@ onMounted(() => {
                     <div class="flex flex-row items-center justify-center">
                       <span
                         class="px-1 py-1 mx-2 text-xs font-medium text-center rounded bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300"
-                        v-for="c in item.compuestos" :key="`role_${c.id}`">{{ c.descripcion }} - {{ c.porcentajes.porcentaje }}
+                        v-for="c in item.compuestos" :key="`role_${c.id}`">{{ c.descripcion }} - {{ c.data.porcentaje }} %
                       </span>
                     </div>
                   </td>

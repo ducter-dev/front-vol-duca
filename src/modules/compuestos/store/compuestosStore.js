@@ -28,6 +28,23 @@ export const useCompuestoStore = defineStore('compuestos', {
         }
       }
     },
+    async fetchAll () {
+      try {
+        const link = `/compuestos`
+        const { data, status } = await api_volumetricos.get(link)
+        this.compuestos = data.data
+        const obj = {
+          ok: true, data: this.compuestos, message: data.message, status, paginacion: data
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
 
     async insert (form) {
       try {

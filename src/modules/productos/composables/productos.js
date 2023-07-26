@@ -26,14 +26,17 @@ const useProducto = () =>{
     }
 
     const insertProducto = async(form) => {
-        console.log("🚀 ~ file: productos.js:26 ~ insertProducto ~ form:", form)
         const resp = await store.insert(form)
+        return resp
+    }
+
+    const syncCompuestos = async(form) => {
+        const resp = await store.syncCompuestos(form)
         return resp
     }
 
     const updateProducto = async(form) => {
         const resp = await store.update(form)
-        console.log("🚀 ~ file: productos.js:34 ~ updateProducto ~ resp:", resp)
         return resp
     }
 
@@ -51,6 +54,7 @@ const useProducto = () =>{
         deleteProducto,
         insertProducto,
         getProductos,
+        syncCompuestos,
     }
 }
 

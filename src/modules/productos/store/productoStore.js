@@ -32,7 +32,7 @@ export const useProductoStore = defineStore('producto', {
     },
     async fetchAll() {
       try {
-        const link = `/productos`
+        const link = `/productos-all`
         const { data, status } = await api_volumetricos.get(link)
 				this.productos = data.data
 				const obj = {
@@ -91,6 +91,24 @@ export const useProductoStore = defineStore('producto', {
         const { data, status } = await api_volumetricos.delete(`/productos/${id}`)
         this.productos = this.productos.filter(densi => densi.id != id)
         const { producto } = data.data
+        const obj = {
+          ok: true, data: producto, message: data.message, status
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+    async syncCompuestos(form) {
+      try {
+        const { data, status } = await api_volumetricos.post('/productos-compuestos', form)
+        const { producto } = data.data
+        const productoSt = this.productos.find(d => d.id == producto.id)
+        productoSt.compuestos = producto.compuestos
         const obj = {
           ok: true, data: producto, message: data.message, status
         }
