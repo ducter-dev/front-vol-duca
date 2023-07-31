@@ -28,6 +28,25 @@ export const usePerfilStore = defineStore('perfiles', {
       }
     },
 
+    async fetchAll () {
+      try {
+        
+        const link = `/roles`
+        const { data, status } = await api_volumetricos.get(link)
+        this.perfiles = data.data
+        const obj = {
+          ok: true, data: this.perfiles, message: data.message, status, paginacion: data
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
+      }
+    },
+
     async insert (form) {
       try {
         const { data, status } = await api_volumetricos.post('/roles', form)
