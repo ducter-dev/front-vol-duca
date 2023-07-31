@@ -89,7 +89,7 @@ export const useProductoStore = defineStore('producto', {
     async delete(id) {
       try {
         const { data, status } = await api_volumetricos.delete(`/productos/${id}`)
-        this.productos = this.productos.filter(densi => densi.id != id)
+        this.productos = this.productos.filter(produc => produc.id != id)
         const { producto } = data.data
         const obj = {
           ok: true, data: producto, message: data.message, status
