@@ -8,8 +8,13 @@ const useCompuesto = () => {
     return resp
   }
 
+  const fetchCompuestosAll = async (params) => {
+    const resp = await store.fetchAll(params)
+    return resp
+  }
+
   const getCompuestos = () => {
-    return store.get()
+    return store.compuestos
   }
 
   const insertCompuesto = async(form) => {
@@ -37,6 +42,7 @@ const useCompuesto = () => {
 
   return {
     fetchCompuestos,
+    fetchCompuestosAll,
     getCompuestos,
     insertCompuesto,
     updateCompuesto,
