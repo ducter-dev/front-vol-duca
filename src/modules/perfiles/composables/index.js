@@ -9,6 +9,11 @@ const usePerfil = () => {
     return resp
   }
 
+  const fetchPerfilesAll = async () => {
+    const resp = await store.fetchAll()
+    return resp
+  }
+
   const getPerfiles = () => {
     return store.perfiles
   }
@@ -38,6 +43,7 @@ const usePerfil = () => {
 
   return {
     fetchPerfiles,
+    fetchPerfilesAll,
     getPerfiles,
     setPerfilSelected,
     getPerfilesSelected,

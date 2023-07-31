@@ -16,7 +16,7 @@ const { bus } = useEventsBus()
 const { fetchUsuarios, selectUsuario } = useUsuario()
 const { addToast } = useToast()
 const router = useRouter()
-const { fetchPerfiles } = usePerfil()
+const { fetchPerfilesAll } = usePerfil()
 
 let usuarios = ref([])
 let loading = ref(false)
@@ -108,8 +108,8 @@ const setPerfiles = (item) => {
  */
 
 onMounted(() => {
+  fetchPerfilesAll()
   fetchDataUsuarios()
-  fetchPerfiles()
 })
 
 </script>
