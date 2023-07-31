@@ -18,6 +18,7 @@ const initialFormData = () => ({
   descripcion: '',
   clave: '',
   compuestos: [],
+  compuestosIds: [],
   porcentajes: [],
 })
 
@@ -30,6 +31,13 @@ if (Object.keys(productSelect.value).length > 0) {
   productoForm.descripcion = productSelect.value.descripcion
   productoForm.clave = productSelect.value.clave
   productoForm.compuestos = productSelect.value.compuestos
+  
+
+  productSelect.value.compuestos.forEach(comp => {
+    comp.porcentaje = comp.data.porcentaje
+    productoForm.compuestosIds.push(comp.id)
+  })
+
 }
 
 
@@ -43,20 +51,38 @@ const handleSubmit = () => {
     descripcion: productoForm.descripcion,
     clave: productoForm.clave,
     compuestos: productoForm.compuestos,
+    compuestosIds: productoForm.compuestosIds,
   }
   emit('submitForm', obj)
   resetform()
 }
+
+/* const checkCompuestos = (item) => {
+  const finded = productSelect.value.compuestos.find( c => c.id == item.id)
+  if (finded) {
+    console.log("🚀 ~ file: FormProductos.vue:59 ~ checkCompuestos ~ finded:", true)
+    return true
+  } else {
+    console.log("🚀 ~ file: FormProductos.vue:59 ~ checkCompuestos ~ finded:", false)
+    return false
+  }
+} */
 
 const goBack = () => {
   router.go(-1)
 }
 
 watch(productoForm, (prod) => {
-  prod.compuestos.forEach(comp => {
+  productoForm.compuestos = []
+  prod.compuestosIds.forEach(idComp => {
+    console.log("🚀 ~ file: FormProductos.vue:77 ~ watch ~ idComp:", idComp)
+    console.log("🚀 ~ file: FormProductos.vue:79 ~ watch ~ compuestos.value:", compuestos.value)
+    const comp = compuestos.value.find(c => c.id == idComp)
+    console.log("🚀 ~ file: FormProductos.vue:80 ~ watch ~ comp:", comp)
     if (!comp.porcentaje) {
       comp.porcentaje = 0
     }
+    productoForm.compuestos.push(comp)
   })
 })
 
@@ -88,8 +114,8 @@ onMounted(() => {
           :id="`check_compuesto${c.id}`" 
           type="checkbox" 
           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-          :value="c"
-          v-model="productoForm.compuestos"
+          :value="c.id"
+          v-model="productoForm.compuestosIds"
         >
         <label 
           :for="`check_compuesto${c.id}`" 
