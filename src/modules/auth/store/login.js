@@ -29,7 +29,6 @@ export const useLoginStore = defineStore('login', {
         const obj = {
           ok: true, detail: data.data.user, status: 'authenticated'
         }
-        console.log("🚀 ~ file: login.js:38 ~ login ~ obj:", obj)
         return obj
       } catch (error) {
         if (error.response) {
@@ -81,23 +80,24 @@ export const useLoginStore = defineStore('login', {
 
     async updatePass(formUser) {
       try {
-        const { id, correo, contrasena, contrasena_confirmation } = formUser
+        const { id, contrasena, contrasena_confirmation } = formUser
         const form = {
-          correo,
           contrasena,
           contrasena_confirmation
         }
-        const { data } = await api_volumetricos.post(`/users/updatePassword/${id}`, form)
+        const { data, status } = await api_volumetricos.post(`/users/updatePassword/${id}`, form)
+        const usuario = data.data.usuario
         this.usuarioSelected = {}
         const obj = {
-          ok: true, data: data.data
+          ok: true, data: usuario, message: data.message, status
         }
         return obj
       } catch (error) {
-          return {
-            ok: false,
-            data: error.response.data
-          }
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
     },
 

@@ -56,7 +56,7 @@ const { addToast } = useToast()
 export default {
   setup() {
     const USERDB = '4dM1n$232o'
-    const PASSDB = 'secret'
+    const PASSDB = 'Jr5396&p&'
     const { login, setlocked } = useAuth()
     const router = useRouter()
 
@@ -84,6 +84,13 @@ export default {
         submit.value = false
       }
       else if(ok && status == "authenticated") {
+
+        /* Revisar si la primera vez que se loguea */
+        if (!detail.verificado) {
+          router.push('/auth/resetpassword')
+          return
+        }
+        
         addToast({
           message: {
             title: "¡Login Correcto!",
