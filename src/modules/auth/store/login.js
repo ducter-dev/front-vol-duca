@@ -19,7 +19,7 @@ export const useLoginStore = defineStore('login', {
           password,
         }
         const res = await api_volumetricos.post('/users/login', dataForm)
-        const { data, status } = res
+        const { data, status, message } = res
         const { access_token } = data.data.user
         delete user.password
         this.user = data.data.user 
@@ -27,37 +27,28 @@ export const useLoginStore = defineStore('login', {
         localStorage.setItem('token', access_token)
         localStorage.setItem('user', JSON.stringify(this.user))
         const obj = {
-          ok: true, detail: data.data.user, status: 'authenticated'
+          data: data.data.user, status, message
         }
         return obj
       } catch (error) {
         if (error.response) {
           // La respuesta fue hecha y el servidor respondió con un código de estado
           // que esta fuera del rango de 2xx
-          if (error.response.status == 419) {
-            // Si existe validación del lado del servidor aplicar llenado de errores aquí
-            const obj = {
-              ok: false, detail:error.response.data.message, status: error.response.status 
-            }
-            return obj
-          } else {
-            // Si existe error manda un toast
-            const obj = {
-              ok: false, detail:`Vaya, algo salió mal en nuestros servidores. <br> Código de error: <strong>${error.response.status}</strong>`, status: error.response.status 
-            }
-            return obj
+          const obj = {
+            data: null , message:error.response.data.message, status: error.response.status 
           }
+          return obj
         } else if (error.request) {
           // La petición fue hecha pero no se recibió respuesta
           // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
           // http.ClientRequest en node.js
           const obj = {
-            ok: false, detail: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
+            data: null, message: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
           }
           return obj
         } else {
           const obj = {
-            ok: false, detail:"Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
+            data: null, message: "Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
           }
           return obj
         }
@@ -122,20 +113,48 @@ export const useLoginStore = defineStore('login', {
     },
 
     async recoveryPass(correo) {
-      const obj = {
-        correo
-      }
-      const { data, status } = await api_volumetricos.post(`/users/recuperarPassword`, obj)
-      if (status === 200) {
+      try {
+        const form = {
+          correo
+        }
+        console.log("🚀 ~ file: login.js:128 ~ recoveryPass ~ form:", form)
+        const { status, data } = await api_volumetricos.post(`/users/recuperarPassword`, form)
         const obj = {
-          ok: true, data: data.data
+          message: data.message, status
         }
         return obj
-      } else {
-        const obj = {
-          ok: false, data: 'Error'
+      } catch (error) {
+        console.log("🚀 ~ file: login.js:120 ~ recoveryPassword ~ error:", error)
+        if (error.response) {
+          console.log("🚀 ~ file: login.js:122 ~ recoveryPassword ~ error.response:", error.response)
+          // La respuesta fue hecha y el servidor respondió con un código de estado
+          // que esta fuera del rango de 2xx
+          if (error.response) {
+            const obj = {
+              message: error.response.data.message, status: error.response.status 
+            }
+            return obj
+          } else {
+            // Si existe error manda un toast
+            const obj = {
+              message:`Vaya, algo salió mal en nuestros servidores. <br> Código de error: <strong>${error.response.status}</strong>`, status: error.response.status 
+            }
+            return obj
+          }
+        } else if (error.request) {
+          // La petición fue hecha pero no se recibió respuesta
+          // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
+          // http.ClientRequest en node.js
+          const obj = {
+            message: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
+          }
+          return obj
+        } else {
+          const obj = {
+            message:"Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
+          }
+          return obj
         }
-        return obj
       }
     },
 

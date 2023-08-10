@@ -29,7 +29,7 @@
     </div>
   </form>
   <div class="py-5">
-    <div class="flex flex-row-reverse">
+    <div class="flex flex-row-reverse justify-between">
       <div class="text-center sm:text-left whitespace-nowrap">
         <router-link :to="{ name: 'Landing' }"
           class="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
@@ -40,7 +40,12 @@
           <span class="inline-block ml-1">volver</span>
         </router-link>
       </div>
-
+      <div class="text-center sm:text-left whitespace-nowrap">
+        <router-link :to="{ name: 'auth.rescutepassword' }"
+          class="px-5 py-4 mx-5 text-sm font-normal text-gray-500 no-underline transition duration-200 cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset hover:underline">
+          <span class="inline-block ml-1">Olvidé mi contraseña</span>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -70,48 +75,74 @@ export default {
 
     const onSubmit = async () => {
       submit.value = true
-      const { ok, detail, status } = await login(userForm.value)
-      
-      if (!ok) {
-        intentos.value++
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: detail,
-            type: "error"
-          },
-        });
-        submit.value = false
-      }
-      else if(ok && status == "authenticated") {
+      const { ok, message, status } = await login(userForm.value)
 
-        /* Revisar si la primera vez que se loguea */
-        if (!detail.verificado) {
-          router.push('/auth/resetpassword')
-          return
-        }
-        
+      if (status == 200) {
         addToast({
           message: {
             title: "¡Login Correcto!",
-            message: "Entrando a la aplicación.",
+            message,
             type: "info"
           },
-        });
-        submit.value = false
-        router.push('/dashboard')
+        })
+        router.push( { name: 'dashboard.home' })
+        
+      }  else {
+        switch (status) {
+          case 400:
+            intentos.value++
+            addToast({
+              message: {
+                title: "¡Error!",
+                message,
+                type: "error"
+              },
+            })
+            break
+          case 403:
+            intentos.value++
+            addToast({
+              message: {
+                title: "¡Error!",
+                message,
+                type: "error"
+              },
+            })
+            break
+          case 401:
+            addToast({
+              message: {
+                title: "¡Error!",
+                message,
+                type: "error"
+              },
+            })
+            break
+          case 402:
+            addToast({
+              message: {
+                title: "¡Error!",
+                message,
+                type: "error"
+              },
+            })
+            break
+          case 404:
+            addToast({
+              message: {
+                title: "¡Error!",
+                message,
+                type: "error"
+              },
+            })
+            router.push('/auth/resetpassword')
+            break
+        
+          default:
+            break
+        }
       }
-      else if(ok && status == "locked"){
-        addToast({
-          message: {
-            title: "¡Error!",
-            message: "Tus credenciales estan bloqueadas",
-            type: "error"
-          },
-        });
-        submit.value = false
-      }
-
+      submit.value = false
     }
     watch(
       () => intentos.value, async(intento) => {
