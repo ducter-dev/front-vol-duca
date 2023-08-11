@@ -81,7 +81,6 @@ export default {
     const onSubmit = async () => {
       submit.value = true
       const { message, status } = await login(userForm.value)
-      console.log("🚀 ~ file: Login.vue:84 ~ onSubmit ~ message:", message)
 
       if (status == 200) {
         sendNotification('¡Login Correcto!', 'info', message)
@@ -100,6 +99,9 @@ export default {
           case 402:
             sendNotification('¡Error!', 'error', message)
             router.push({ name: 'auth.resetpassword'})
+            break
+          case 403:
+            sendNotification('¡Error!', 'error', message)
             break
         }
       }
@@ -127,16 +129,16 @@ export default {
     watch(
       () => intentos.value, async(intento) => {
         if (intento == 3) {
-          console.log("bloquear usuario"+ userForm.value.usuario)
-          const { detail } = await setlocked(userForm.value.usuario)
-          console.log(detail)
+          const { data, status, message } = await setlocked(userForm.value.usuario)
+          const title = status == 200 ? `Bloqueado hasta las ${data.fecha_desbloqueo}` : 'Error'
+          const type = 'error'
           addToast({
             message: {
-              title: "¡Error!",
-              message: "Espera" + detail,
-              type: "error"
+              title,
+              message,
+              type
             },
-          });
+          })
         }
       }
     ) 

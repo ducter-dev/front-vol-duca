@@ -175,20 +175,41 @@ export const useLoginStore = defineStore('login', {
       }
     },
 
-    async bloquearUsuario (formBloqueo) {
-      const { usuario_id, fecha_bloqueo, fecha_desbloqueo } = formBloqueo
-      const obj = { usuario_id, fecha_bloqueo, fecha_desbloqueo }
-      const { status, data } = await api_volumetricos.post(`api/bloqueados/`, obj)
-      if (status === 201) {
+    async locked (usuario) {
+      try {
+        const form = {
+          usuario
+        }
+        console.log("🚀 ~ file: login.js:182 ~ locked ~ form:", form)
+        const { status, data } = await api_volumetricos.post(`/users/bloquear-usuario/`, form)
+        console.log("🚀 ~ file: login.js:186 ~ locked ~ status:", status)
+        console.log("🚀 ~ file: login.js:186 ~ locked ~ data:", data)
         const obj = {
-          ok: true, data: data.data
+          data: data.data.bloqueo, message: data.message, status
         }
         return obj
-      } else {
-        const obj = {
-          ok: false, detail: e.response.data, status:e.response.status
+      } catch (error) {
+        if (error.response) {
+          // La respuesta fue hecha y el servidor respondió con un código de estado
+          // que esta fuera del rango de 2xx
+          const obj = {
+            data: null , message:error.response.data.message, status: error.response.status 
+          }
+          return obj
+        } else if (error.request) {
+          // La petición fue hecha pero no se recibió respuesta
+          // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
+          // http.ClientRequest en node.js
+          const obj = {
+            data: null, message: "Conexión rechazada con nuestros servidores. <br> Código de error: <strong>0</strong>", status: error.request.status 
+          }
+          return obj
+        } else {
+          const obj = {
+            data: null, message: "Ha ocurrido un error inesperado, por favor vuelve a intentarlo.", status: "00" 
+          }
+          return obj
         }
-        return obj
       }
     }
   },
