@@ -8,7 +8,7 @@ import SidebarMobile from "../../../layout/components/Sidebar/Mobile.vue"
 import Footer from "../../../layout/components/Footer.vue"
 import ToastList from "../components/toast/list.vue"
 import useAuth from '../../auth/composables/useAuth'
-
+import SessionManager from '../../../layout/session/Index.vue'
 
 const { getCurrentUser, getLocalUser } = useAuth()
 
@@ -48,6 +48,7 @@ onMounted(() => {
             </main>
           </transition>
         </router-view>
+        <SessionManager />
         <Footer />
         <ToastList />
       </div>
