@@ -73,77 +73,57 @@ export default {
     })
     const intentos = ref(0)
 
+    /**
+     * Submits the form and handles the response.
+     *
+     * @return {Promise<void>} - A promise that resolves when the form is submitted and the response is handled.
+     */
     const onSubmit = async () => {
       submit.value = true
-      const { ok, message, status } = await login(userForm.value)
+      const { message, status } = await login(userForm.value)
+      console.log("🚀 ~ file: Login.vue:84 ~ onSubmit ~ message:", message)
 
       if (status == 200) {
-        addToast({
-          message: {
-            title: "¡Login Correcto!",
-            message,
-            type: "info"
-          },
-        })
+        sendNotification('¡Login Correcto!', 'info', message)
         router.push( { name: 'dashboard.home' })
         
       }  else {
+        
         switch (status) {
           case 400:
             intentos.value++
-            addToast({
-              message: {
-                title: "¡Error!",
-                message,
-                type: "error"
-              },
-            })
-            break
-          case 403:
-            intentos.value++
-            addToast({
-              message: {
-                title: "¡Error!",
-                message,
-                type: "error"
-              },
-            })
+            sendNotification('¡Error!', 'error', message)
             break
           case 401:
-            addToast({
-              message: {
-                title: "¡Error!",
-                message,
-                type: "error"
-              },
-            })
+            sendNotification('¡Error!', 'error', message)
             break
           case 402:
-            addToast({
-              message: {
-                title: "¡Error!",
-                message,
-                type: "error"
-              },
-            })
-            break
-          case 404:
-            addToast({
-              message: {
-                title: "¡Error!",
-                message,
-                type: "error"
-              },
-            })
-            router.push('/auth/resetpassword')
-            break
-        
-          default:
+            sendNotification('¡Error!', 'error', message)
+            router.push({ name: 'auth.resetpassword'})
             break
         }
       }
       submit.value = false
     }
+
+    /**
+     * Sends a notification with the given title, type, and message.
+     * 
+     * @param {string} title - The title of the notification.
+     * @param {string} type - The type of the notification.
+     * @param {string} message - The message of the notification.
+     */
+    const sendNotification = (title, type, message) => {
+      // Call the addToast function with the notification object
+      addToast({
+        message: {
+          title,
+          message,
+          type
+        },
+      })
+    }
+
     watch(
       () => intentos.value, async(intento) => {
         if (intento == 3) {

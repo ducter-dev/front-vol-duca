@@ -15,11 +15,11 @@ export const useLoginStore = defineStore('login', {
       try {
         const { usuario, password } = user
         const dataForm = {
-          usuario: usuario,
+          usuario,
           password,
         }
         const res = await api_volumetricos.post('/users/login', dataForm)
-        const { data, status, message } = res
+        const { data, status } = res
         const { access_token } = data.data.user
         delete user.password
         this.user = data.data.user 
@@ -27,7 +27,7 @@ export const useLoginStore = defineStore('login', {
         localStorage.setItem('token', access_token)
         localStorage.setItem('user', JSON.stringify(this.user))
         const obj = {
-          data: data.data.user, status, message
+          data: data.data.user, status, message: data.message
         }
         return obj
       } catch (error) {
