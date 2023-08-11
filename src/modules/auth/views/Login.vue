@@ -61,7 +61,7 @@ const { addToast } = useToast()
 export default {
   setup() {
     const USERDB = '4dM1n$232o'
-    const PASSDB = 'Jr5396&p&'
+    const PASSDB = 'ARxGky6CPS'
     const { login, setlocked } = useAuth()
     const router = useRouter()
 
