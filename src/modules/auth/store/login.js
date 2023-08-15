@@ -5,7 +5,8 @@ export const useLoginStore = defineStore('login', {
   id: 'login',
   state: () => ({
     user: null,
-    token: null
+    token: null,
+    id_caducado: 0,
   }),
   getters: {
     isAuth: (state) => state.user !== null
@@ -34,8 +35,12 @@ export const useLoginStore = defineStore('login', {
         if (error.response) {
           // La respuesta fue hecha y el servidor respondió con un código de estado
           // que esta fuera del rango de 2xx
+          if (error.response.status == 402) {
+            this.id_caducado = error.response.data.data
+          }
+
           const obj = {
-            data: null , message:error.response.data.message, status: error.response.status 
+            data: null , message: error.response.data.message, status: error.response.status 
           }
           return obj
         } else if (error.request) {
@@ -69,16 +74,11 @@ export const useLoginStore = defineStore('login', {
       }
     },
 
-    async updatePass(formUser) {
+    async updatePass(form) {
       try {
-        const { id, contrasena, contrasena_confirmation } = formUser
-        const form = {
-          contrasena,
-          contrasena_confirmation
-        }
-        const { data, status } = await api_volumetricos.post(`/users/updatePassword/${id}`, form)
+        const { data, status } = await api_volumetricos.post(`/users/updatePassword`, form)
         const usuario = data.data.usuario
-        this.usuarioSelected = {}
+        
         const obj = {
           ok: true, data: usuario, message: data.message, status
         }
