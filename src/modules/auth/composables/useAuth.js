@@ -69,6 +69,10 @@ const useAuth = () => {
     return store.user
   }
 
+  const getIdCaducado = () => {
+    return store.id_caducado
+  }
+
   return {
     login,
     logout,
@@ -82,6 +86,7 @@ const useAuth = () => {
     guardarIntentos,
     bloquearUsuario,
     getLocalUser,
+    getIdCaducado,
   }
 }
 
