@@ -18,7 +18,8 @@ const { addToast } = useToast()
 
 const now = useTimestamp()
 
-const { idle, lastActive, reset } = useIdle(1 * 60 * 1000)
+const timeExpiration = parseInt(import.meta.env.VITE_EXPIRATION)
+const { idle, lastActive, reset } = useIdle(1 * 60 * timeExpiration)
 const { inc, count } = useCounter()
 
 let loader = ref(false)
@@ -55,7 +56,7 @@ const idledFor = computed(() => Math.floor((now.value - lastActive.value) / 1000
 
 watch(idledFor, (newValue) => {
   if (newValue > 0) {
-    if (newValue == 1 * 60) {
+    if (newValue == timeExpiration) {
       addToast({
         message: {
           title: '¡Info!',

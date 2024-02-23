@@ -131,7 +131,7 @@ const nuevoArchivo = () => {
 }
 
 const nuevoArchivoMensual = () => {
-  router.push('/archivos/nuevoMensual')
+  router.push('/archivos/nuevo-mensual')
 }
 
 const obtenerEmpresaActiva = async () => {
@@ -193,16 +193,20 @@ onMounted(() => {
                   <LHeaderTh value="Creación" center />
                 </tr>
               </template>
-              <template #body>
-                <tr v-for="(item) in archivos" v-if="archivos.length > 0" :key="item.id">
-                  <LBodyTh :value="item.nombre" center />
-                  <LBodyTd :value="item.balance.fecha" center />
-                  <LBodyTd :value="item.usuario.nombre" center />
-                  <LBodyTd :value="item.creado" center />
-                </tr>
-                <tr v-else>
-                  <LBodyTh value="Sin información" colspan="7" center />
-                </tr>
+              <template  #body>
+                <template v-if="archivos.length > 0">
+                  <tr v-for="(item) in archivos"  :key="item.id">
+                    <LBodyTh :value="item.nombre" center />
+                    <LBodyTd :value="item.balance.fecha" center />
+                    <LBodyTd :value="item.usuario.nombre" center />
+                    <LBodyTd :value="item.creado" center />
+                  </tr>
+                </template>
+                <template v-else>
+                  <tr>
+                    <LBodyTh value="Sin información" colspan="7" center />
+                  </tr>
+                </template>
               </template>
             </LTable>
             <Paginate v-if="pagination.last_page > 1" :pagination="pagination" :offset="7"
