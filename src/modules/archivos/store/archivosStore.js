@@ -123,7 +123,7 @@ export const useArchivosStore = defineStore('archivo', {
 
 		async insert(fecha) {
 			try {
-				const { data } = await api_volumetricos.post(`/json/empresas/1/fecha/${fecha}/json/export/unidad/litros`)
+				const { data } = await api_volumetricos.post(`/json/v3/empresas/1/fecha/${fecha}/json/export/unidad/litros`)
 				const obj = {
 						ok: true, data: data.data
 				}
