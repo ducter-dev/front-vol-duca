@@ -19,7 +19,6 @@ export default {
 },
   setup() {
     const router = useRouter()
-    const { addToast } = useToast()
     const { emit } = useEventsBus()
     const { fetchBalances } = useBalance()
     const { fetchClientes } = useCliente()
@@ -57,9 +56,9 @@ export default {
     }
 
     onMounted(() => {
-      fetchBalances()
-      fetchClientes()
       fetchEmpresas()
+      fetchClientes()
+      fetchBalances()
     })
 
     return {

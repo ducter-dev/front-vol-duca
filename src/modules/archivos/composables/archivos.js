@@ -37,13 +37,13 @@ const useArchivo = () =>{
 		return store.get()
 	}
 
-	const insertArchivo = async(fecha) => {
-		const resp = await store.insert(fecha)
+	const insertArchivo = async(form) => {
+		const resp = await store.insert(form)
 		return resp
 	}
 
-	const insertArchivoMensual = async(fechaInicio, fechaFinal) => {
-		return await store.insertMensual(fechaInicio, fechaFinal)
+	const insertArchivoMensual = async(form) => {
+		return await store.insertMensual(form)
 	}
 
 	const updateArchivo = async(archivo) => {

@@ -121,11 +121,12 @@ export const useArchivosStore = defineStore('archivo', {
 			return this.archivos
 		},
 
-		async insert(fecha) {
+		async insert(form) {
 			try {
-				const { data } = await api_volumetricos.post(`/json/v3/empresas/1/fecha/${fecha}/json/export/unidad/litros`)
+				const { data } = await api_volumetricos.post(`/json/v3/`, form)
+				const archivo = data.data
 				const obj = {
-						ok: true, data: data.data
+						ok: true, data: archivo, message: `Creado archivo diario de ${archivo.balance.fecha}`
 				}
 				return obj
 			
@@ -134,11 +135,12 @@ export const useArchivosStore = defineStore('archivo', {
 			}
 		},
 
-		async insertMensual(fechaInicio, fechaFinal) {
+		async insertMensual(form) {
 			try {
-				const { data } = await api_volumetricos.get(`/empresas/1/fechaInicio/${fechaInicio}/fechaFinal/${fechaFinal}/json/export/unidad/litros`)
+				const { data } = await api_volumetricos.post(`/json/v3/mensual`, form)
+				const archivo = data.data
 				const obj = {
-						ok: true, data: data
+						ok: true, data: archivo, message: `Creado archivo mensual del período ${archivo.periodo}`
 				}
 				return obj
 			} catch (error) {

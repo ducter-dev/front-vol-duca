@@ -16,6 +16,7 @@ export const useEmpresaStore = defineStore('empresa', {
         const link = `/empresas?page=${page}`
         const { data, status } = await api_volumetricos.get(link)
         this.empresas = data.data
+        this.currentEmpresa = this.empresas[0]
         const obj = {
           ok: true, data: this.empresas, message: data.message, status, paginacion: data
         }
