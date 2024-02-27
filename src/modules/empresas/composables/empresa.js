@@ -3,7 +3,7 @@ import { useEmpresaStore } from '../store/empresaStore'
 const useEmpresa = () => {
   const store = useEmpresaStore()
   
-  const fetchEmpresas = async(params) => {
+  const fetchEmpresas = async(params = { page: 1}) => {
     const resp = await store.fetch(params)
     return resp
   }

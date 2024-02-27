@@ -37,22 +37,24 @@
 
 <script>
 
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import IconLeft from '@/assets/icons/caretLeft.svg'
 import useToast from "../../dashboard/composables/useToast"
 import useArchivo from '../composables/archivos'
 import { format } from 'date-fns'
-import useBitacora from '../../bitacora/composables'
+import useEmpresa from '../../empresas/composables/empresa'
 
 export default {
   components: { IconLeft },
   setup() {
     const router = useRouter()
     const { insertArchivo } = useArchivo()
-    const { addBitacora } = useBitacora()
+    const { getCurrentEmpresa } = useEmpresa()
     const { addToast } = useToast()
     const date = ref(new Date())
+
+    const empresa = computed(() => getCurrentEmpresa())
 
     const goBack = () => {
       router.go(-1)
@@ -64,7 +66,13 @@ export default {
 
     const crearJson = async ()  => {
       try {
-        const res = await insertArchivo(format(date.value, 'yyyy-MM-dd'))
+        const form = {
+          idEmpresa: empresa.value.id,
+          fechaBalance: format(date.value, 'yyyy-MM-dd'),
+          tipo: "export",
+          unidad: "litros"
+        }
+        const res = await insertArchivo(form)
         const { ok } = res
         if (ok) {
           addToast({
@@ -76,7 +84,7 @@ export default {
           })
           router.push('/archivos')
         } else{
-          addBitacora(data.data)
+          
           addToast.error(`${res.data.error}`, {
             position: "bottom-right",
             timeout: 2000,
@@ -93,7 +101,7 @@ export default {
           })
         }
       } catch (error) {
-        addBitacora(data.data)
+        
         addToast({
           message: {
             title: "¡Error!",

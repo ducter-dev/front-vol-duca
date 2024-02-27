@@ -29,27 +29,30 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import IconLeft from '@/assets/icons/caretLeft.svg'
-import { useToast } from 'vue-toastification'
+import useToast from '../../dashboard/composables/useToast'
 import useArchivo from '../composables/archivos'
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { format, startOfMonth, lastDayOfMonth } from 'date-fns'
-import useBitacora from '../../bitacoras/composables/bitacora'
+import useEmpresa from '../../empresas/composables/empresa'
 
 export default {
 	components: { IconLeft, Datepicker },
 	setup(context) {
 		const router = useRouter()
 		const { insertArchivoMensual } = useArchivo()
-		const { addBitacora } = useBitacora()
-		const toast = useToast()
+		const { getCurrentEmpresa } = useEmpresa()
+		const { addToast } = useToast()
 		const date = ref({
 			month: new Date().getMonth(),
 			year: new Date().getFullYear()
 		})
+
+		const empresa = computed(() => getCurrentEmpresa())
+
 		const goBack = () => {
 			router.go(-1)
 		}
@@ -63,58 +66,44 @@ export default {
 				const monthstr = new Date(date.value.year, date.value.month)
 				const fechaInicio = format(startOfMonth(monthstr), 'yyyy-MM-dd')
 				const fechaFin = format(lastDayOfMonth(monthstr), 'yyyy-MM-dd')
-
-				const res = await insertArchivoMensual(fechaInicio, fechaFin)
-				const { ok, data } = res
+				
+				const form = {
+					idEmpresa: empresa.value.id,
+					fechaInicio: fechaInicio,
+					fechaFinal: fechaFin,
+					tipo: 'export',
+					unidad: 'litros',
+				}
+				
+				const res = await insertArchivoMensual(form)
+				const { ok, data, message } = res
 				
 				if (ok) {
-					toast.success(`El archivo ha sido generado exitosamente`, {
-						position: "bottom-right",
-						timeout: 2000,
-						closeOnClick: true,
-						pauseOnFocusLoss: true,
-						pauseOnHover: true,
-						draggable: true,
-						draggablePercent: 0.6,
-						showCloseButtonOnHover: false,
-						hideProgressBar: true,
-						closeButton: "button",
-						icon: true,
-						rtl: false
-					})
+					addToast({
+            message: {
+							title: "Éxito!",
+							message: `${message}`,
+							type: "success"
+							},
+					});
+					
 					router.push('/archivos')
 				} else {
-					addBitacora(data.data)
-					toast.error(`${res.data.error}`, {
-						position: "bottom-right",
-						timeout: 2000,
-						closeOnClick: true,
-						pauseOnFocusLoss: true,
-						pauseOnHover: true,
-						draggable: true,
-						draggablePercent: 0.6,
-						showCloseButtonOnHover: false,
-						hideProgressBar: true,
-						closeButton: "button",
-						icon: true,
-						rtl: false
+					addToast({
+						message: {
+							title: "Error!",
+							message: `${res.data.error}`,
+							type: "error"
+						},
 					})
 				}
 			} catch (error) {
-				addBitacora(data.data)
-				toast.error(`Error: ${error}`, {
-					position: "bottom-right",
-					timeout: 2000,
-					closeOnClick: true,
-					pauseOnFocusLoss: true,
-					pauseOnHover: true,
-					draggable: true,
-					draggablePercent: 0.6,
-					showCloseButtonOnHover: false,
-					hideProgressBar: true,
-					closeButton: "button",
-					icon: true,
-					rtl: false
+				addToast({
+					message: {
+						title: "Error!",
+						message: `Error: ${error}`,
+						type: "error"
+					},
 				})
 			}
 		}
