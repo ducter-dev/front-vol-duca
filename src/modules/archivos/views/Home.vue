@@ -4,13 +4,14 @@ import { useRouter } from 'vue-router';
 import useArchivo from '../composables/archivos';
 import CardDescargaDiaria from '@/layout/components/Card/CardDescargaDiaria.vue'
 import IconPlus from '@/assets/icons/plus-solid.svg'
+import IconCheck from '@/assets/icons/check-solid.svg'
 import useEmpresa from '../../empresas/composables/empresa'
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import useToast from "../../dashboard/composables/useToast"
 import Paginate from '@/layout/components/Paginate/Index.vue'
 
 const router = useRouter()
-const { fetchArchivos, fetchArchivosMensuales } = useArchivo()
+const { fetchArchivos, fetchArchivosMensuales, downloadJson, downloadJsonMensual } = useArchivo()
 const { getCurrentEmpresa } = useEmpresa()
 const archivos = ref([])
 const archivosMensuales = ref([])
@@ -144,6 +145,14 @@ const obtenerEmpresaActiva = async () => {
   }
 }
 
+const download = (ruta) => {
+  try {
+    downloadJson(ruta)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 onMounted(() => {
   obtenerEmpresaActiva()
 })
@@ -196,7 +205,25 @@ onMounted(() => {
               <template  #body>
                 <template v-if="archivos.length > 0">
                   <tr v-for="(item) in archivos"  :key="item.id">
-                    <LBodyTh :value="item.nombre" center />
+                    <td
+                      class="px-4 py-2 text-sm text-center text-dark whitespace-nowrap"
+                    >
+                      <button v-show="item.estado == 1"
+                        type="button" 
+                        class="inline-flex items-center p-2 text-sm font-medium text-center rounded-full text-dark bg-slate-200 hover:bg-gray-400 focus:ring-4 focus:outline-none"
+                        @click="download(item.ruta)"
+                      >
+                        <IconCheck v-show="item.estado == 1" class="w-5 h-5" fill="currentColor" />
+                        <span class="ml-2">{{ item.nombre }}</span>
+                      </button> 
+                      <button v-show="item.estado != 1"
+                        type="button" 
+                        class="inline-flex items-center p-2 text-sm text-center rounded-full hover:bg-gray-300 focus:ring-4 focus:outline-none"
+                        @click="download(item.ruta)"
+                      >
+                        {{ item.nombre }}
+                      </button> 
+                    </td>
                     <LBodyTd :value="item.balance.fecha" center />
                     <LBodyTd :value="item.usuario.nombre" center />
                     <LBodyTd :value="item.creado" center />
@@ -229,21 +256,42 @@ onMounted(() => {
               <template #head>
                 <tr>
                   <LHeaderTh value="Nombre de Archivo" center />
-                  <LHeaderTh value="Fecha Balance" center />
+                  <LHeaderTh value="Periodo" center />
                   <LHeaderTh value="Usuario" center />
                   <LHeaderTh value="Creación" center />
                 </tr>
               </template>
               <template #body>
-                <tr v-for="(item) in archivosMensuales" v-if="archivosMensuales.length > 0" :key="item.id">
-                  <LBodyTh :value="item.nombre" center />
-                  <LBodyTd :value="item.balance.fecha" center />
+                <template v-if="archivosMensuales.length > 0">
+                  <tr v-for="(item) in archivosMensuales"  :key="item.id">
+                  <!-- <LBodyTh :value="item.nombre" center /> -->
+                  <td
+                      class="px-4 py-2 text-sm text-center text-dark whitespace-nowrap"
+                    >
+                      <button v-show="item.estado == 1"
+                        type="button" 
+                        class="inline-flex items-center p-2 text-sm font-medium text-center rounded-full text-dark bg-slate-200 hover:bg-gray-400 focus:ring-4 focus:outline-none"
+                        @click="download(item.ruta)"
+                      >
+                        <IconCheck v-show="item.estado == 1" class="w-5 h-5" fill="currentColor" />
+                        <span class="ml-2">{{ item.nombre }}</span>
+                      </button> 
+                      <button v-show="item.estado != 1"
+                        type="button" 
+                        class="inline-flex items-center p-2 text-sm text-center rounded-full hover:bg-gray-300 focus:ring-4 focus:outline-none"
+                        @click="download(item.ruta)"
+                      >
+                        {{ item.nombre }}
+                      </button> 
+                    </td>
+                  <LBodyTd :value="item.periodo" center />
                   <LBodyTd :value="item.usuario.nombre" center />
                   <LBodyTd :value="item.creado" center />
                 </tr>
-                <tr v-else>
+                </template>
+                <template v-else>
                   <LBodyTh value="Sin información" colspan="7" center />
-                </tr>
+                </template>
               </template>
             </LTable>
             <Paginate v-if="paginationMensual.last_page > 1" :pagination="paginationMensual" :offset="7"

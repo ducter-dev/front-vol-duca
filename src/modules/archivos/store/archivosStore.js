@@ -39,7 +39,7 @@ export const useArchivosStore = defineStore('archivo', {
 		async fetchMensual(params){
 			try {
 				const { page } = params
-				const link = `/archivos?page=${page}`
+				const link = `/archivosMensuales?page=${page}`
 				const { data, status } = await api_volumetricos.get(link)
 				this.archivosMensuales = data.data
 				const obj = {
@@ -175,7 +175,7 @@ export const useArchivosStore = defineStore('archivo', {
 
 		async downloadDiario (url) {
 			try {
-				const link = `${api_url}/${url}`
+				const link = `${api_url}${url}`
 				window.open(link, '_blank')
 			} catch (error) {
 				return { ok: false, data: error.message}
