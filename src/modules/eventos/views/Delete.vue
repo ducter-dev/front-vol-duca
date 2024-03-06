@@ -2,9 +2,9 @@
 import Modal from '@/layout/components/Modal/Index.vue'
 import { ref } from 'vue'
 import useEvento from '../composables/evento'
-
 import useToast from '../../dashboard/composables/useToast'
 import IconDelete from '@/assets/icons/trash-can-solid.svg'
+import Button from '@/layout/components/Button.vue'
 
 const { deleteEvento } = useEvento()
 const { addToast } = useToast()

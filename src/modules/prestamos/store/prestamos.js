@@ -71,13 +71,22 @@ export const usePrestamoStore = defineStore('prestamo', {
       }
     },
 
-    async delete(prestamo) {
-      const { data } = await api_volumetricos.delete(`/prestamos/${prestamo.id}`)
-      this.prestamos = this.prestamos.filter(per => per.id != prestamo.id)
-      const obj = {
-        ok: true, data: data.data
+    async delete(id_prestamo) {
+      try {
+        const { data, status } = await api_volumetricos.delete(`/prestamos/${id_prestamo}`)
+        this.prestamos = this.prestamos.filter(per => per.id != id_prestamo)
+        const { prestamo } = data.data
+        const obj = {
+          ok: true, data: prestamo, message: data.message, status
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
-      return obj
     },
 
     setFechaSelect(fecha) {

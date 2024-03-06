@@ -2,9 +2,9 @@
 import Modal from '@/layout/components/Modal/Index.vue'
 import { ref } from 'vue'
 import usePermiso from '../composables'
-
 import useToast from '../../dashboard/composables/useToast'
 import IconDelete from '@/assets/icons/trash-can-solid.svg'
+import Button from '@/layout/components/Button.vue'
 
 const { deletePermiso } = usePermiso()
 const { addToast } = useToast()

@@ -41,7 +41,11 @@ const props = defineProps({
     srText: {
         type: String || undefined,
         default: undefined,
-    }
+    },
+    Lname: {
+        type: String,
+        default: 'LButton',
+    },
 })
 const emit = defineEmits(['click'])
 const { type, variant, size, squared, pill, href, iconOnly, srText } = props

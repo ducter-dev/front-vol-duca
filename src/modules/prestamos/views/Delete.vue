@@ -1,9 +1,10 @@
 <script setup>
 import Modal from '@/layout/components/Modal/Index.vue'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import usePrestamo from '../composables/prestamo'
 import useToast from '../../dashboard/composables/useToast'
 import IconDelete from '@/assets/icons/trash-can-solid.svg'
+import Button from '@/layout/components/Button.vue'
 
 const { deletePrestamo } = usePrestamo()
 const { addToast } = useToast()
@@ -26,11 +27,11 @@ const submit = async () => {
   try {
         loader.value = true
         const { data, status, message } = await deletePrestamo(props.id)
-        if (status == 200) {
+        if (status == 202) {
           addToast({
             message: {
               title: "Éxito!",
-              message: `Se eliminó el préstamo con consecutivo ${data.id} del listado.`,
+              message: message,
               type: "success"
             },
           })
@@ -61,13 +62,13 @@ const submit = async () => {
     :isOpen="isOpen">
     <template #trigger>
       <span class="mr-2 transform cursor-pointer hover:text-primary hover:scale-110" v-tippy="'Eliminar'">
-        <IconDelete class="w-4 h-4" />
+        <IconDelete class="w-4 h-4" fill="currentColor" />
       </span>
     </template>
-    <template #title>Eliminar Densidad</template>
+    <template #title>Eliminar Préstamo</template>
     <template #content>
       <p class="text-sm text-gray-500">
-        ¿Está seguro que desea eliminar la densidad: <strong>{{ model.id }}</strong>?
+        ¿Está seguro que desea eliminar el préstamo: <strong>{{ model.id }}</strong>?
       </p>
     </template>
     <template #actions>

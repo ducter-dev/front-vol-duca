@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import useDictamen from '../composables/dictamen'
 import useToast from '../../dashboard/composables/useToast'
 import IconDelete from '@/assets/icons/trash-can-solid.svg'
+import Button from '@/layout/components/Button.vue'
 
 const { deleteDictamen } = useDictamen()
 const { addToast } = useToast()
