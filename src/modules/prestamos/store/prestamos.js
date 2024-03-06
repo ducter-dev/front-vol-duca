@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import api_volumetricos from '@/config'
 
-export const usePrestamoStore = defineStore('producto', {
+export const usePrestamoStore = defineStore('prestamo', {
   id: 'prestamo',
   state: () => ({
     prestamos: [],
@@ -33,7 +33,7 @@ export const usePrestamoStore = defineStore('producto', {
     async insert(prestamo) {
       try {
         const { data, status } = await api_volumetricos.post('/prestamos', prestamo)
-        const prest = data.data
+        const prest = data.data.prestamo
         this.prestamos.push(prest)
         const obj = {
           ok: true, data: prest, message: data.message, status
@@ -49,18 +49,26 @@ export const usePrestamoStore = defineStore('producto', {
     },
 
     async update(prestamo) {
-      const { data } = await api_volumetricos.put(`/prestamos/${prestamo.id}`, prestamo)
-      const p = this.prestamos.find(per => per.id == prestamo.id)
-      const { cliente_id_c, cliente_id_v, cantidad, fecha } = data.data
-      p.cliente_id_c = cliente_id_c
-      p.cliente_id_v = cliente_id_v
-      p.cantidad = cantidad
-      p.cliente_id_c = cliente_id_c
-      this.prestamoSelected = {}
-      const obj = {
-        ok: true, data: data.data
+      try {
+        const { data, status } = await api_volumetricos.put(`/prestamos/${prestamo.id}`, prestamo)
+        const p = this.prestamos.find(per => per.id == prestamo.id)
+        const { cliente_id_c, cliente_id_v, cantidad } = data.data.prestamo
+        p.cliente_id_c = cliente_id_c
+        p.cliente_id_v = cliente_id_v
+        p.cantidad = cantidad
+        p.cliente_id_c = cliente_id_c
+        this.prestamoSelected = {}
+        const obj = {
+          ok: true, data: p, message: data.message, status
+        }
+        return obj
+      } catch (error) {
+        if(error.response){
+          return { ok: false, message: error.response.data.message }
+        }else{
+          return { ok: false, message: error }
+        }
       }
-      return obj
     },
 
     async delete(prestamo) {

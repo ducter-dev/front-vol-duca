@@ -55,18 +55,19 @@ const handleSubmit = () => {
 }
 if (Object.keys(prestamoSelect.value).length > 0) {
   console.log('Editar')
-  const year = (prestamoSelect.value.balance.fecha.substr(0,4))
-  const month = parseInt(prestamoSelect.value.balance.fecha.substr(5,2)) - 1
-  const day = (prestamoSelect.value.balance.fecha.substr(8,2))
+  const year = (prestamoSelect.value.fecha.substr(0,4))
+  const month = parseInt(prestamoSelect.value.fecha.substr(5,2)) - 1
+  const day = (prestamoSelect.value.fecha.substr(8,2))
   const fecha =  new Date(year, month, day)
   date.value = fecha
   prestamo.id = prestamoSelect.value.id
-  prestamo.cliente_id_c = prestamoSelect.cliente_id_c
-  prestamo.cliente_compra = prestamoSelect.cliente_compra
-  prestamo.cliente_id_v = prestamoSelect.cliente_id_v
-  prestamo.cliente_venta = prestamoSelect.cliente_venta
-  prestamo.cantidad = prestamoSelect.cantidad
-  prestamo.fecha = prestamoSelect.fecha
+  clienteSelectedC.value = clientes.value.find( (c) => c.id == prestamoSelect.value.cliente_id_c)
+  clienteSelectedV.value = clientes.value.find( (c) => c.id == prestamoSelect.value.cliente_id_v)
+  prestamo.cliente_compra = clienteSelectedC.value
+  prestamo.cliente_id_c = clienteSelectedC.value.id
+  prestamo.cliente_venta = clienteSelectedV.value
+  prestamo.cliente_id_v = clienteSelectedV.value.id
+  prestamo.cantidad = prestamoSelect.value.cantidad
 }
 
 const goBack = () => {

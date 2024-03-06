@@ -102,8 +102,8 @@ const goToInsert = () => {
   router.push({ name: 'prestamos.create'})
 }
 
-const goToEdit = (dictamen) => {
-  selectPrestamo(dictamen)
+const goToEdit = (prestamo) => {
+  selectPrestamo(prestamo)
   router.push({ name: 'prestamos.edit'})
 }
 
@@ -203,8 +203,8 @@ onMounted(() => {
               <template #body v-if="prestamos.length > 0">
                 <tr v-for="(item) in prestamos" :key="item.id">
                   <LBodyTh :value="item.id" center />
-                  <LBodyTh :value="item.cliente_compra.nombreCliente" center />
                   <LBodyTd :value="item.cliente_venta.nombreCliente" center />
+                  <LBodyTh :value="item.cliente_compra.nombreCliente" center />
                   <LBodyTd :value="item.cantidad" center />
                   <LBodyTd :value="item.fecha" center />
                   <LBodyTd center>

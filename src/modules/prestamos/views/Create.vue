@@ -16,12 +16,8 @@ const { insertPrestamo } = usePrestamo()
 async function onSubmit(form) {
   loader.value = true
   const { data, status, message } = await insertPrestamo(form)
-  console.log("🚀 ~ onSubmit ~ message:", message)
-  console.log("🚀 ~ onSubmit ~ status:", status)
-  console.log("🚀 ~ onSubmit ~ data:", data)
   
   if (status == 201) {
-    
     addToast({
       message: {
         title: "Éxito!",
