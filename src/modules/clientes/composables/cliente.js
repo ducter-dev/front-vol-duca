@@ -3,13 +3,13 @@ import { useClienteStore } from "../store/clienteStore"
 const useCliente = () => {
   const store = useClienteStore()
 
-  const fetchClientes = async (params) => {
+  const fetchClientes = async (params = { page: 1 }) => {
     const resp = await store.fetch(params)
     return resp
   }
 
   const getClientes = () => {
-    return store.get()
+    return store.clientes
   }
 
   const insertCliente = async(form) => {

@@ -1,12 +1,12 @@
 <script setup>
 import Modal from '@/layout/components/Modal/Index.vue'
-import { ref } from 'vue'
-import useCliente from '../composables/cliente'
+import { reactive, ref } from 'vue'
+import usePrestamo from '../composables/prestamo'
 import useToast from '../../dashboard/composables/useToast'
 import IconDelete from '@/assets/icons/trash-can-solid.svg'
 import Button from '@/layout/components/Button.vue'
 
-const { deleteCliente } = useCliente()
+const { deletePrestamo } = usePrestamo()
 const { addToast } = useToast()
 
 let loader = ref(false)
@@ -25,49 +25,50 @@ const closeModal = () => {
 
 const submit = async () => {
   try {
-    loader.value = true
-    const { data, status, message } = await deleteCliente(props.id)
-    if (status == 200) {
-      addToast({
-        message: {
-          title: "Éxito!",
-          message: `Se eliminó el cliente ${data.nombreCliente} del listado.`,
-          type: "success"
-        },
-      })
-      isOpen.value = false
-      loader.value = false
-      emit('successSubmit')
-    } else {
-      loader.value = false
-      addToast({
-        message: {
-          title: "¡Error!",
-          message: message,
-          type: "error",
-          component: "delete - onSubmit()"
-        },
-      })
-      isOpen.value = false
-    }
-  } catch (error) {
-    loader.value = false
-    console.log(error)
-  }
+        loader.value = true
+        const { data, status, message } = await deletePrestamo(props.id)
+        if (status == 202) {
+          addToast({
+            message: {
+              title: "Éxito!",
+              message: message,
+              type: "success"
+            },
+          })
+          isOpen.value = false
+          loader.value = false
+          emit('successSubmit')
+        } else {
+          loader.value = false
+          addToast({
+            message: {
+              title: "¡Error!",
+              message: message,
+              type: "error",
+              component: "delete - onSubmit()"
+            },
+          })
+          isOpen.value = false
+        }
+      } catch (error) {
+        loader.value = false
+        console.log(error)
+      }
 }
 </script>
+
 <template>
   <Modal size="lg" position="center" @submit="submit" @openModal="toggleModal()" @closeModal="closeModal()"
     :isOpen="isOpen">
     <template #trigger>
       <span class="mr-2 transform cursor-pointer hover:text-primary hover:scale-110" v-tippy="'Eliminar'">
-        <IconDelete class="w-4 h-4" />
+        <IconDelete class="w-4 h-4" fill="currentColor" />
       </span>
     </template>
-    <template #title>Eliminar Cliente</template>
+    <template #title>Eliminar Préstamo</template>
     <template #content>
       <p class="text-sm text-gray-500">
-        ¿Está seguro que desea eliminar el cliente: <strong>{{ model.nombreCliente }}</strong>?
+        ¿Está seguro que desea eliminar el préstamo: <strong>{{ model.id }}</strong>?
       </p>
     </template>
     <template #actions>

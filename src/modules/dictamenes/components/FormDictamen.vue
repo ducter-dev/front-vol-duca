@@ -16,7 +16,6 @@ export default {
     const router = useRouter()
     const date = ref(new Date())
     const dictSelect = computed(() => getDictamenSelected())
-    console.log("🚀 ~ file: FormDictamen.vue:19 ~ setup ~ dictSelect:", dictSelect)
     const clientes = computed(() => getClientes())
     const balanceSelect = ref({})
     const { emit } = useEventsBus()

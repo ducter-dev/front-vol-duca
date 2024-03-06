@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
-
+import Button from '@/layout/components/Button.vue'
 const emit = defineEmits(['submit', 'openModal', 'closeModal', 'closeModalBackdrop'])
 
 const closeModal = () => {

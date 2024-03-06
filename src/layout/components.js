@@ -8,6 +8,7 @@ import LCardListActionButton from "./components/Card/CardListActionButton.vue"
 import LCardListItem from "./components/Card/CardListItem.vue"
 import LFloatInput from "./components/Form/FloatInput.vue"
 import LTextPlane from "./components/Form/TextPlane.vue"
+import LButton from "./components/Button.vue"
 
 export default {
     LBreadcrumb,
@@ -18,5 +19,6 @@ export default {
     LCardListActionButton,
     LCardListItem,
     LFloatInput,
-    LTextPlane
+    LTextPlane,
+    LButton,
 }

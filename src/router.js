@@ -16,6 +16,7 @@ import productosRouter from './modules/productos/routes'
 import compuestosRouter from './modules/compuestos/routes'
 import eventosRouter from './modules/eventos/routes'
 import revisionesRouter from './modules/revisiones/routes'
+import prestamosRouter from './modules/prestamos/routes'
 
 const routes = [
   {
@@ -34,6 +35,10 @@ const routes = [
   {
     path: '/archivos',
     ...archivosRouter
+  },
+  {
+    path: '/prestamos',
+    ...prestamosRouter
   },
   {
     path: '/dictamenes',
