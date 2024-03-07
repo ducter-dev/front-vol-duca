@@ -85,7 +85,7 @@ watch(clienteSelectedV, () => {
 })
 
 watch(date, () => {
-  prestamo.fecha = date.value
+  prestamo.fecha = format(date.value, 'yyyy-MM-dd')
 })
 
 
