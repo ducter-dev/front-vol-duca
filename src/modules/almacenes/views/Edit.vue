@@ -2,7 +2,7 @@
 import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useEventsBus from "../../../layout/eventBus"
-import usePrestamo from '../composables/prestamo'
+import useAlmacenes from '../composables/almacenes'
 import useToast from '../../dashboard/composables/useToast'
 import FormPrestamos from '../components/FormAlmacen.vue'
 
@@ -10,12 +10,12 @@ import FormPrestamos from '../components/FormAlmacen.vue'
 const router = useRouter()
 const { addToast } = useToast()
 const { emit, bus } = useEventsBus()
-const { updatePrestamo } = usePrestamo()
+const { updateAlmacen } = useAlmacenes()
 
 const loader = ref(false)
 
 async function onSubmit(form) {
-  const res = await updatePrestamo(form)
+  const res = await updateAlmacen(form)
   const { data, status, message } = res
   if (status == 201) {
     loader.value = false
@@ -26,7 +26,7 @@ async function onSubmit(form) {
         type: "success"
       },
     })
-    router.push({ name: 'prestamos.home' })
+    router.push({ name: 'almacenes.home' })
   } else {
     loader.value = false
     addToast({
@@ -88,7 +88,7 @@ watch(() => bus.value.get('submitForm'), (value) => {
           <router-link
             :to="{ name: 'prestamos.home' }"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
-            >Préstamos</router-link
+            >Almacenes</router-link
           >
         </div>
       </li>
@@ -111,7 +111,7 @@ watch(() => bus.value.get('submitForm'), (value) => {
             href="#"
             class="ml-2 text-sm font-medium text-slate-500 hover:text-slate-700"
             aria-current="page"
-            >Editar Préstamo</a
+            >Editar Almacén</a
           >
         </div>
       </li>
@@ -121,11 +121,11 @@ watch(() => bus.value.get('submitForm'), (value) => {
     <h2
       class="py-1 text-2xl font-bold leading-6 text-slate-900 dark:text-white sm:text-3xl sm:leading-9 sm:truncate"
     >
-      Editar préstamo
+      Editar almacén
     </h2>
   </div>
   <div class="flex items-center justify-center my-4 ">
     <FormPrestamos @submitForm="onSubmit" />
   </div>
   
-</template>../composables/almacenes
+</template>

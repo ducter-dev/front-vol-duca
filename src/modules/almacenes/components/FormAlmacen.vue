@@ -80,7 +80,7 @@ watch(clienteSelected, () => {
 })
 
 watch(date, () => {
-  almacen.fecha = date.value
+  almacen.fecha = format(date.value, 'yyyy-MM-dd')
 })
 
 

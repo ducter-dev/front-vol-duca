@@ -52,12 +52,15 @@ export const useAlmacenStore = defineStore('almacen', {
       try {
         const { data, status } = await api_volumetricos.put(`/almacenes/${almacen.id}`, almacen)
         const alm = this.almacenes.find(a => a.id == almacen.id)
-        const { cliente_id, inicio, volumen, fin, fecha } = data.data.almacen
-        p = {}
-        p = data.data.almacen
+        const { cliente_id, fecha, inicio, volumen, fin } = data.data.almacen
+        alm.fecha = fecha
+        alm.inicio = inicio
+        alm.volumen = volumen
+        alm.fin = fin
+        alm.cliente_id = cliente_id
         this.almacenSelected = {}
         const obj = {
-          ok: true, data: p, message: data.message, status
+          ok: true, data: alm, message: data.message, status
         }
         return obj
       } catch (error) {
